@@ -1,0 +1,15 @@
+{
+    "name": "richie/absensi",
+    "autoload": {
+        "psr-4": {
+            "Richie\\Absensi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Richie-Z",
+            "email": "zakariarichie@yahoo.com"
+        }
+    ],
+    "require": {}
+}
