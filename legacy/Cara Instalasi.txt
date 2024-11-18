@@ -1,0 +1,7 @@
+Cara Instalasi :
+- Pastikan Anda sudah download XAMPP dan mengintstalnya di laptop/pc Anda
+- Jalankan Apache & Mysql di XAMPP
+
+- Copy folder project absensi ini ke dalam folder htdocs yang ada di folder xampp yang Anda instal
+- Ubah config.php yang ada di dalam folder project absensi ini sesuai dengan database yang Anda buat di phpmyadmin
+- jika sudah, coba akses melalui web browser Anda dengan link sebagai berikut : localhost/absensi
