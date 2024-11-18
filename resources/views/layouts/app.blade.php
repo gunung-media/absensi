@@ -11,14 +11,15 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <h1>
-                    Page Header
-                    <small>Optional description</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                    <li class="active">Here</li>
-                </ol>
+                <div>
+                    <ol class="breadcrumb" style="background-color: #3c8dbc">
+                        <li class="active" style="color: #000">
+                            <a style="color: #fff" href="{{ route('admin.dashboard') }}"> <i
+                                    class="fa fa-chevron-circle-right"></i> Home</a>
+                            <a style="color: #fff" href=""> </a>
+                        </li>
+                    </ol>
+                </div>
             </section>
 
             <section class="content container-fluid">
