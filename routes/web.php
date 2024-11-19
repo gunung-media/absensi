@@ -16,4 +16,5 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'Admin\DashboardController@index')->name('dashboard');
         Route::resource('user', 'Admin\UserController')->except('show');
+        Route::resource('work-unit', 'Admin\WorkUnitController')->except('show');
     });

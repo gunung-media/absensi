@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ asset('dist/css/skins/skin-blue.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('plugins/iCheck/square/blue.css') }}">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
 
     <!-- Google Font -->
     <link rel="stylesheet"
