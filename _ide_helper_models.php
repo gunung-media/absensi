@@ -15,6 +15,28 @@ namespace App\Models{
 /**
  * 
  *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position query()
+ * @property int $id
+ * @property string $name
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	class Position extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
  * @property int $id
  * @property string $name
  * @property string $username
@@ -35,7 +57,29 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
+ * @mixin \Eloquent
  */
 	class User extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * 
+ *
+ * @property int $id
+ * @property string $name
+ * @property bool $is_active
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereUpdatedAt($value)
+ */
+	class WorkUnit extends \Eloquent {}
 }
 
