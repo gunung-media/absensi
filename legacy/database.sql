@@ -7,7 +7,7 @@
 -- Server version: 10.6.17-MariaDB-cll-lve
 -- PHP Version: 8.3.13
 
-use absensi;
+use absensi_legacy;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
