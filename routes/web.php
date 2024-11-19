@@ -15,4 +15,5 @@ Route::prefix('admin')
     ->middleware('auth')
     ->group(function () {
         Route::get('/', 'Admin\DashboardController@index')->name('dashboard');
+        Route::resource('user', 'Admin\UserController')->except('show');
     });

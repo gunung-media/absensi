@@ -26,7 +26,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Data Admin</a></li>
+                    <li><a href="{{ route('admin.user.index') }}">Data Admin</a></li>
                     <li><a href="#">Data Jabatan</a></li>
                     <li><a href="#">Data Satuan Kerja</a></li>
                     <li><a href="#">Data Karyawan</a></li>
