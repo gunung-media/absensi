@@ -17,7 +17,6 @@
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <!-- Notifications Menu -->
                 <li class="dropdown notifications-menu">
                     <!-- Menu toggle button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -40,28 +39,24 @@
                         <li class="footer"><a href="#">View all</a></li>
                     </ul>
                 </li>
-                <!-- User Account Menu -->
+
                 <li class="dropdown user user-menu">
-                    <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('dist/img/avatar.png') }}" class="user-image" alt="User Image">
-                        <span class="hidden-xs">{{ auth()->user()->name }}</span>
+                        <span class="hidden-xs glyphicon glyphicon-log-out"> </span>Hallo, {{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- The user image in the menu -->
                         <li class="user-header">
-                            <img src="{{ asset('dist/img/avatar.png') }}" class="img-circle" alt="User Image">
-
-                            <p>
-                                {{ auth()->user()->name }} - Admin Web
-                            </p>
+                            <img src="{{ asset('dist/img/avatar.png') }}" class="img-circle" alt="">
+                            <p>{{ auth()->user()->name }} <small>Admin Web</small></p>
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="password.php" class="btn btn-default btn-flat"><i class="fa fa-key"></i> Ubah
+                                    Password</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                <a href="javascript:;" data-id="0019" data-toggle="modal" data-target="#modal-logout"
+                                    class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> Keluar</a>
                             </div>
                         </li>
                     </ul>
