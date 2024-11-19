@@ -2,7 +2,8 @@
 
 @section('content')
     <div style="margin-bottom: 10px">
-        <a href=""><button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah</button></a>
+        <a href="{{ route('admin.user.create') }}"><button type="button" class="btn btn-default btn-sm"><i
+                    class="fa fa-plus"></i> Tambah</button></a>
     </div>
 
     <div class="panel panel-primary">
@@ -29,7 +30,8 @@
                                 <td>Admin</td>
                                 <td>Aktif</td>
                                 <td>
-                                    <a href="" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                    <a href="{{ route('admin.user.edit', $user->id) }}" class="btn btn-primary btn-xs"><i
+                                            class="fa fa-edit"></i> Edit</a>
                                     <a href="{{ route('admin.user.destroy', $user->id) }}"
                                         class="btn btn-danger btn-xs delete-btn">
                                         <i class="fa fa-trash"></i> Hapus

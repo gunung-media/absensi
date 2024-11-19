@@ -40,15 +40,16 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        //
+        return view('admin.user.form', [
+            'user' => $user
+        ]);
     }
 
     public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'required',
-            'username' => 'required|unique:users,' . $user->id,
-            'password' => 'required',
+            'username' => 'required|unique:users,username,' . $user->id,
         ]);
 
         $user->update([
