@@ -6,7 +6,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
+                <img src="{{ asset('dist/img/avatar.png') }}" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>{{ auth()->user()->name }}</p>
@@ -18,7 +18,7 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li><a href="index.php"><i class="fa fa-home"></i> <span>HOME</span></a></li>
+            <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-home"></i> <span>HOME</span></a></li>
             <li class="treeview">
                 <a href="#"><i class="fa fa-database"></i> <span>DATA MASTER</span>
                     <span class="pull-right-container">
@@ -26,8 +26,12 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#">Link in level 2</a></li>
-                    <li><a href="#">Link in level 2</a></li>
+                    <li><a href="#">Data Admin</a></li>
+                    <li><a href="#">Data Jabatan</a></li>
+                    <li><a href="#">Data Satuan Kerja</a></li>
+                    <li><a href="#">Data Karyawan</a></li>
+                    <li><a href="#">Data Keterangan</a></li>
+                    <li><a href="#">Data Mesin Fingerprint</a></li>
                 </ul>
             </li>
             <li><a href="?p=master"><i class="fa fa-book"></i> <span>DATA ABSENSI</span></a></li>
