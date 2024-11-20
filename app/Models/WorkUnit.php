@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -20,10 +21,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit active()
  * @mixin \Eloquent
  */
 class WorkUnit extends Model
 {
+    use HasActiveScope;
+
     protected $fillable = [
         'name',
         'is_active'

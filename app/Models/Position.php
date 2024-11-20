@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,15 +21,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position active()
  * @mixin \Eloquent
  */
 class Position extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    use HasActiveScope;
+
     protected $fillable = [
         'name',
         'is_active',

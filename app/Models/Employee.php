@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $name
@@ -34,6 +35,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereUsername($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereWorkUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereWorkingPeriod($value)
+ * @property-read \App\Models\Position|null $position
+ * @property-read \App\Models\WorkUnit|null $workUnit
  * @mixin \Eloquent
  */
 class Employee extends Model
@@ -49,4 +52,14 @@ class Employee extends Model
         'work_unit_id',
         'is_active',
     ];
+
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class);
+    }
+
+    public function workUnit(): BelongsTo
+    {
+        return $this->belongsTo(WorkUnit::class);
+    }
 }

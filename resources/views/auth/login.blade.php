@@ -7,6 +7,7 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
+        <x-validation-alert />
 
         <form action="{{ route('login.post') }}" method="post">
             @csrf
