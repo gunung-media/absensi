@@ -18,4 +18,5 @@ Route::prefix('admin')
         Route::resource('user', 'Admin\UserController')->except('show');
         Route::resource('work-unit', 'Admin\WorkUnitController')->except('show');
         Route::resource('position', 'Admin\PositionController')->except('show');
+        Route::resource('information', 'Admin\InformationController')->except('show');
     });
