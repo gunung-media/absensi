@@ -3,8 +3,8 @@
 @section('content')
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <i class="fa fa-pencil"></i> Form Input Keterangan
-            <a href="{{ route('admin.information.index') }}"><button type="button" class="btn btn-sm"
+            <i class="fa fa-pencil"></i> Form Input Fingerprint
+            <a href="{{ route('admin.fingerprint.index') }}"><button type="button" class="btn btn-sm"
                     style="float:right;background-color:#ffffff;color:#000;line-height:0.8">
                     <i class="fa fa-chevron-circle-left"></i> Kembali
                 </button></a>
@@ -12,10 +12,10 @@
         <div class="panel-body" id="panel-body">
             <x-validation-alert />
             <form class="form-horizontal" name="myform" role="form"
-                action="{{ isset($information) ? route('admin.information.update', $information->id) : route('admin.information.store') }}"
+                action="{{ isset($fingerprint) ? route('admin.fingerprint.update', $fingerprint->id) : route('admin.fingerprint.store') }}"
                 method="POST" enctype="multipart/form-data">
                 @csrf
-                @if (isset($information))
+                @if (isset($fingerprint))
                     @method('PUT')
                 @endif
                 <div class="box-body">
@@ -26,16 +26,16 @@
                                 <div class="col-sm-4">
                                     <input type="text" id="name" name="name" class="form-control"
                                         placeholder="Masukkan Nama" required
-                                        value="{{ isset($information) ? $information->name : old('name') }}">
+                                        value="{{ isset($fingerprint) ? $fingerprint->name : old('name') }}">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Kode</label>
+                                <label for="inputEmail3" class="col-sm-2 control-label">IP/MAC ADDRESS</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="name" name="code" class="form-control"
+                                    <input type="text" id="name" name="ip" class="form-control"
                                         placeholder="Masukkan Nama" required
-                                        value="{{ isset($information) ? $information->code : old('code') }}">
+                                        value="{{ isset($fingerprint) ? $fingerprint->ip : old('ip') }}">
                                 </div>
                             </div>
 
