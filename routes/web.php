@@ -19,4 +19,5 @@ Route::prefix('admin')
         Route::resource('work-unit', 'Admin\WorkUnitController')->except('show');
         Route::resource('position', 'Admin\PositionController')->except('show');
         Route::resource('information', 'Admin\InformationController')->except('show');
+        Route::resource('fingerprint', 'Admin\FingerprintController')->except('show');
     });
