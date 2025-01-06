@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Instances\FingerprintInstance;
 use App\Models\Fingerprint;
 use Illuminate\Http\Request;
 
 class FingerprintController extends Controller
 {
+    public function __construct(
+        protected FingerprintInstance $fingerprintInstance,
+    ) {}
     public function index()
     {
+        $this->fingerprintInstance->test();
         return view('admin.fingerprint.index', [
             'fingerprints' => Fingerprint::all()
         ]);
