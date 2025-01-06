@@ -13,12 +13,16 @@ Route::prefix('login')
 Route::prefix('admin')
     ->name('admin.')
     ->middleware('auth')
+    ->namespace('Admin')
     ->group(function () {
-        Route::get('/', 'Admin\DashboardController@index')->name('dashboard');
-        Route::resource('user', 'Admin\UserController')->except('show');
-        Route::resource('work-unit', 'Admin\WorkUnitController')->except('show');
-        Route::resource('position', 'Admin\PositionController')->except('show');
-        Route::resource('information', 'Admin\InformationController')->except('show');
-        Route::resource('fingerprint', 'Admin\FingerprintController')->except('show');
-        Route::resource('employee', 'Admin\EmployeeController')->except('show');
+        Route::get('/', 'DashboardController@index')->name('dashboard');
+        Route::get('absence', 'AbsenceController@index')->name('absence');
+        Route::namespace('Master')->group(function () {
+            Route::resource('user', 'UserController')->except('show');
+            Route::resource('work-unit', 'WorkUnitController')->except('show');
+            Route::resource('position', 'PositionController')->except('show');
+            Route::resource('information', 'InformationController')->except('show');
+            Route::resource('fingerprint', 'FingerprintController')->except('show');
+            Route::resource('employee', 'EmployeeController')->except('show');
+        });
     });
