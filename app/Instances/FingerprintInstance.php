@@ -16,6 +16,12 @@ class FingerprintInstance
         $this->zk->disableDevice();
     }
 
+    public function disable()
+    {
+        $this->zk->enableDevice();
+        $this->zk->disconnect();
+    }
+
     public function test()
     {
         $this->init();
@@ -23,9 +29,42 @@ class FingerprintInstance
         $this->disable();
     }
 
-    public function disable()
+    public function getUsers()
     {
-        $this->zk->enableDevice();
-        $this->zk->disconnect();
+        $this->init();
+        $users = $this->zk->getUser();
+        $this->disable();
+        return $users;
+    }
+
+    public function setUser(int $uid, string $name, int|string $password)
+    {
+        $this->init();
+        try {
+            $this->zk->setUser(
+                uid: $uid,
+                userid: $uid,
+                name: $name,
+                password: $password,
+            );
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            throw $e;
+        } finally {
+            $this->disable();
+        }
+    }
+
+    public function deleteUser(int $uid)
+    {
+        $this->init();
+        try {
+            $this->zk->removeUser($uid);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+            throw $e;
+        } finally {
+            $this->disable();
+        }
     }
 }

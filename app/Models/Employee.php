@@ -46,6 +46,7 @@ class Employee extends Model
     use HasActiveScope;
 
     protected $fillable = [
+        'id',
         'name',
         'username',
         'email',

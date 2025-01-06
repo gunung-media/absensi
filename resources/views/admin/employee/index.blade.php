@@ -33,11 +33,11 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->username }}</td>
-                                <td>{{ $employee->dob }}</td>
-                                <td>{{ $employee->email }}</td>
-                                <td>{{ $employee->position->name }}</td>
-                                <td>{{ $employee->workUnit->name }}</td>
-                                <td>{{ $employee->working_period }}</td>
+                                <td>{{ $employee->dob ?? '-' }}</td>
+                                <td>{{ $employee->email ?? '-' }}</td>
+                                <td>{{ $employee->position?->name ?? '-' }}</td>
+                                <td>{{ $employee->workUnit?->name ?? '-' }}</td>
+                                <td>{{ $employee->working_period ?? '-' }}</td>
                                 <td>{{ $employee->is_active ? 'Aktif' : 'Tidak Aktif' }}</td>
                                 <td>
                                     <a href="{{ route('admin.employee.edit', $employee->id) }}"

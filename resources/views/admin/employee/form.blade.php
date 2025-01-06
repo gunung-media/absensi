@@ -72,7 +72,7 @@
                                 <div class="col-sm-4">
                                     <input type="date" id="work_period" name="working_period" class="form-control"
                                         placeholder="Masukkan Masa Kerja" required
-                                        value="{{ isset($employee) ? $employee->work_period : old('work_period') }}">
+                                        value="{{ isset($employee) ? $employee->working_period : old('working_period') }}">
                                 </div>
                             </div>
 
@@ -100,7 +100,7 @@
                                         <option value="">Pilih Unit Kerja</option>
                                         @forelse ($workUnits as $workUnit)
                                             <option value="{{ $workUnit->id }}"
-                                                {{ isset($employee) && $employee->workUnit_id == $workUnit->id ? 'selected' : '' }}>
+                                                {{ isset($employee) && $employee->work_unit_id == $workUnit->id ? 'selected' : '' }}>
                                                 {{ $workUnit->name }}
                                             </option>
                                         @empty
