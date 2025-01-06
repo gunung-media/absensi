@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Instances\FingerprintInstance;
 use App\Models\Employee;
 use App\Models\User;
 use App\Models\WorkUnit;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        protected FingerprintInstance $fingerprintInstance,
+    ) {}
     public function index()
     {
         return view('admin.dashboard', [

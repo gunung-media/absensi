@@ -1,3 +1,10 @@
+@php
+    function activeRoute($route)
+    {
+        return Route::currentRouteName() == $route ? 'active' : '';
+    }
+@endphp
+
 <aside class="main-sidebar">
     <section class="sidebar">
 
@@ -14,7 +21,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <li><a href="{{ route('admin.dashboard') }}"><i class="fa fa-home"></i> <span>HOME</span></a></li>
-            <li class="treeview">
+            <li class="treeview active">
                 <a href="#"><i class="fa fa-database"></i> <span>DATA MASTER</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
@@ -24,7 +31,8 @@
                     <li><a href="{{ route('admin.user.index') }}">Data Admin</a></li>
                     <li><a href="{{ route('admin.position.index') }}">Data Jabatan</a></li>
                     <li><a href="{{ route('admin.work-unit.index') }}">Data Satuan Kerja</a></li>
-                    <li><a href="{{ route('admin.employee.index') }}">Data Karyawan</a></li>
+                    <li class="{{ activeRoute('admin.employee.index') }}"><a
+                            href="{{ route('admin.employee.index') }}">Data Karyawan</a></li>
                     <li><a href="{{ route('admin.information.index') }}">Data Keterangan</a></li>
                     <li><a href="{{ route('admin.fingerprint.index') }}">Data Mesin Fingerprint</a></li>
                 </ul>

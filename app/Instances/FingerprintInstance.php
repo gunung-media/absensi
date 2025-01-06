@@ -2,7 +2,11 @@
 
 namespace App\Instances;
 
+use App\Models\Employee;
+use Jmrashed\Zkteco\Lib\Helper\Util;
 use Jmrashed\Zkteco\Lib\ZKTeco;
+
+use function GuzzleHttp\default_ca_bundle;
 
 class FingerprintInstance
 {
@@ -66,5 +70,40 @@ class FingerprintInstance
         } finally {
             $this->disable();
         }
+    }
+
+    protected function getAttState(int $state)
+    {
+        switch ($state) {
+            case 15:
+                return "Wajah";
+            default:
+                return "State belum diatur, Silahkan hubungi Developer";
+        }
+    }
+
+    protected function getAttType(int $type)
+    {
+        switch ($type) {
+            case 255:
+                return "Check-in";
+            default:
+                return "Type belum diatur, Silahkan hubungi Developer";
+        }
+    }
+
+    public function getAttendance()
+    {
+        $this->init();
+        $attendances = $this->zk->getAttendance();
+        $this->disable();
+        return collect($attendances)->map(function ($attendance) {
+            return [
+                ...$attendance,
+                'state' => $this->getAttState($attendance['state']),
+                'type' => $this->getAttType($attendance['type']),
+                'employee' => Employee::find($attendance['id'])
+            ];
+        });
     }
 }
