@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -37,10 +38,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereWorkingPeriod($value)
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\WorkUnit|null $workUnit
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee active()
  * @mixin \Eloquent
  */
 class Employee extends Model
 {
+    use HasActiveScope;
+
     protected $fillable = [
         'name',
         'username',
