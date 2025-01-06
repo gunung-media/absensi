@@ -77,10 +77,10 @@
         $('.datatable').DataTable({
             order: [],
             columnDefs: [{
-                orderable: false,
+                orderable: true,
                 targets: 'no-sort'
             }],
-            bSort: false,
+            bSort: true,
         });
     });
 </script>

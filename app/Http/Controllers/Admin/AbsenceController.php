@@ -13,7 +13,7 @@ class AbsenceController extends Controller
 
     public function index()
     {
-        $attendance = $this->fingerprintInstance->getAttendance();
-        return view('admin.absence.index', compact('attendance'));
+        $attendances = $this->fingerprintInstance->getAttendance();
+        return view('admin.absence.index', compact('attendances'));
     }
 }

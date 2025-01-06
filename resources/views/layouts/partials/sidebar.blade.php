@@ -37,7 +37,8 @@
                     <li><a href="{{ route('admin.fingerprint.index') }}">Data Mesin Fingerprint</a></li>
                 </ul>
             </li>
-            <li><a href="?p=master"><i class="fa fa-book"></i> <span>DATA ABSENSI</span></a></li>
+            <li><a href="{{ route('admin.absence.index') }}"><i class="fa fa-book"></i> <span>DATA ABSENSI</span></a>
+            </li>
             <li><a href="#"><i class="fa fa-file"></i> <span>LAPORAN</span></a></li>
         </ul>
     </section>

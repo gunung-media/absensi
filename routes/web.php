@@ -16,13 +16,14 @@ Route::prefix('admin')
     ->namespace('Admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
-        Route::get('absence', 'AbsenceController@index')->name('absence');
-        Route::namespace('Master')->group(function () {
-            Route::resource('user', 'UserController')->except('show');
-            Route::resource('work-unit', 'WorkUnitController')->except('show');
-            Route::resource('position', 'PositionController')->except('show');
-            Route::resource('information', 'InformationController')->except('show');
-            Route::resource('fingerprint', 'FingerprintController')->except('show');
-            Route::resource('employee', 'EmployeeController')->except('show');
-        });
+        Route::get('absence', 'AbsenceController@index')->name('absence.index');
+        Route::namespace('Master')
+            ->group(function () {
+                Route::resource('user', 'UserController')->except('show');
+                Route::resource('work-unit', 'WorkUnitController')->except('show');
+                Route::resource('position', 'PositionController')->except('show');
+                Route::resource('information', 'InformationController')->except('show');
+                Route::resource('fingerprint', 'FingerprintController')->except('show');
+                Route::resource('employee', 'EmployeeController')->except('show');
+            });
     });

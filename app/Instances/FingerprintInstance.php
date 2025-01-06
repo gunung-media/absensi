@@ -3,6 +3,7 @@
 namespace App\Instances;
 
 use App\Models\Employee;
+use Carbon\Carbon;
 use Jmrashed\Zkteco\Lib\Helper\Util;
 use Jmrashed\Zkteco\Lib\ZKTeco;
 
@@ -98,8 +99,11 @@ class FingerprintInstance
         $attendances = $this->zk->getAttendance();
         $this->disable();
         return collect($attendances)->map(function ($attendance) {
+            $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
             return [
                 ...$attendance,
+                'date' => $carbon->format('d, F, Y'),
+                'time' => $carbon->format('H:i:s'),
                 'state' => $this->getAttState($attendance['state']),
                 'type' => $this->getAttType($attendance['type']),
                 'employee' => Employee::find($attendance['id'])
