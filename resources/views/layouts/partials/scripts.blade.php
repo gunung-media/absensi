@@ -20,6 +20,9 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"
     integrity="sha256-1m4qVbsdcSU19tulVTbeQReg0BjZiW6yGffnlr/NJu4=" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         @if (session('success'))
@@ -40,6 +43,16 @@
             });
         @endif
 
+        @if (session('errorToast'))
+            Swal.fire({
+                toast: true,
+                position: 'bottom-end',
+                title: "{{ session('errorToast') }}",
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 3000 // Toast will disappear after 3 seconds
+            });
+        @endif
     });
 </script>
 

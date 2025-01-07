@@ -2,16 +2,15 @@
 
 namespace App\Instances;
 
+use App\Jobs\CheckOperation;
 use App\Models\Employee;
 use Carbon\Carbon;
-use Jmrashed\Zkteco\Lib\Helper\Util;
 use Jmrashed\Zkteco\Lib\ZKTeco;
-
-use function GuzzleHttp\default_ca_bundle;
 
 class FingerprintInstance
 {
     public ZKTeco $zk;
+
 
     public function init()
     {
@@ -25,6 +24,18 @@ class FingerprintInstance
     {
         $this->zk->enableDevice();
         $this->zk->disconnect();
+    }
+
+    public function check(): bool
+    {
+        try {
+            CheckOperation::dispatchSync('192.168.1.201', 4370);
+            return true;
+        } catch (\Throwable $th) {
+            echo $th->getMessage();
+            \Log::error('Error in operation: ' . $th->getMessage());
+            return false;
+        }
     }
 
     public function test()
@@ -93,21 +104,65 @@ class FingerprintInstance
         }
     }
 
-    public function getAttendance()
+    public function getAttendance(array $params = [])
     {
         $this->init();
         $attendances = $this->zk->getAttendance();
         $this->disable();
-        return collect($attendances)->map(function ($attendance) {
-            $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
-            return [
-                ...$attendance,
-                'date' => $carbon->format('d, F, Y'),
-                'time' => $carbon->format('H:i:s'),
-                'state' => $this->getAttState($attendance['state']),
-                'type' => $this->getAttType($attendance['type']),
-                'employee' => Employee::find($attendance['id'])
-            ];
-        });
+        return collect($attendances)
+            ->filter(function ($attendance) use ($params) {
+                $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
+
+                $monthMatch = isset($params['m']) ? $carbon->month == $params['m'] : true;
+                $yearMatch = isset($params['y']) ? $carbon->year == $params['y'] : true;
+
+                return $monthMatch && $yearMatch;
+            })
+            ->map(function ($attendance) {
+                $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
+                return [
+                    ...$attendance,
+                    'date' => $carbon->format('d, F, Y'),
+                    'time' => $carbon->format('H:i:s'),
+                    'state' => $this->getAttState($attendance['state']),
+                    'type' => $this->getAttType($attendance['type']),
+                    'employee' => Employee::find($attendance['id'])
+                ];
+            });
+    }
+
+    public function getAttendanceGroupBy(array $params = [])
+    {
+        $this->init();
+        $attendances = $this->zk->getAttendance();
+        $this->disable();
+        return collect($attendances)
+            ->filter(function ($attendance) use ($params) {
+                $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
+
+                $monthMatch = isset($params['m']) ? $carbon->month == $params['m'] : true;
+                $yearMatch = isset($params['y']) ? $carbon->year == $params['y'] : true;
+
+                return $monthMatch && $yearMatch;
+            })
+            ->map(function ($attendance) {
+                $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
+                return [
+                    ...$attendance,
+                    'date' => $carbon->format('d, F, Y'),
+                    'time' => $carbon->format('H:i:s'),
+                    'state' => $this->getAttState($attendance['state']),
+                    'type' => $this->getAttType($attendance['type']),
+                ];
+            })->groupBy('id')
+            ->map(function ($value, $key) {
+                return [
+                    'employee' => Employee::find($key),
+                    'attendances' => $value->groupBy(function ($attendance) {
+                        $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
+                        return $carbon->day; // Group by day of the month
+                    })->toArray(),
+                ];
+            });
     }
 }

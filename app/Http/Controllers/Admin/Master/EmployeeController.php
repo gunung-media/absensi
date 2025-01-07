@@ -19,15 +19,20 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        $employeeFromDevice = $this->fingerprintInstance->getUsers();
-        foreach ($employeeFromDevice as $emp) {
-            if (!$employees->some(fn($employee) => $employee->id === $emp['uid'])) {
-                Employee::create([
-                    'id' => $emp['uid'],
-                    'name' => $emp['name'],
-                    'username' => $emp['name'],
-                ]);
+
+        if ($this->fingerprintInstance->check()) {
+            $employeeFromDevice = $this->fingerprintInstance->getUsers();
+            foreach ($employeeFromDevice as $emp) {
+                if (!$employees->some(fn($employee) => $employee->id === $emp['uid'])) {
+                    Employee::create([
+                        'id' => $emp['uid'],
+                        'name' => $emp['name'],
+                        'username' => $emp['name'],
+                    ]);
+                }
             }
+        } else {
+            session()->flash('errorToast', 'Fingerprint device offline');
         }
         return view('admin.employee.index', [
             'employees' => $employees

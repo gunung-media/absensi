@@ -17,6 +17,11 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::get('absence', 'AbsenceController@index')->name('absence.index');
+        Route::prefix('report')->name('report.')->group(function () {
+            Route::get('/', 'ReportController@index')->name('index');
+            Route::get('/absence', 'ReportController@absence')->name('absence');
+        });
+
         Route::namespace('Master')
             ->group(function () {
                 Route::resource('user', 'UserController')->except('show');

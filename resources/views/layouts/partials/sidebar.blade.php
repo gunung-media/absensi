@@ -39,7 +39,7 @@
             </li>
             <li><a href="{{ route('admin.absence.index') }}"><i class="fa fa-book"></i> <span>DATA ABSENSI</span></a>
             </li>
-            <li><a href="#"><i class="fa fa-file"></i> <span>LAPORAN</span></a></li>
+            <li><a href="{{ route('admin.report.index') }}"><i class="fa fa-file"></i> <span>LAPORAN</span></a></li>
         </ul>
     </section>
 </aside>
