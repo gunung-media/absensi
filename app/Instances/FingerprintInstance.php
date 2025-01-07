@@ -44,6 +44,7 @@ class FingerprintInstance
             pcntl_alarm(0);
             return true;
         } catch (\Throwable $th) {
+            echo $th->getMessage();
             session()->flash('errorToast', "Mesin '{$this->fingerprint->name}' offline");
             return false;
         }
