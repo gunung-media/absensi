@@ -4,16 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Instances\FingerprintInstance;
+use App\Models\Fingerprint;
 
 class AbsenceController extends Controller
 {
-    public function __construct(
-        protected FingerprintInstance $fingerprintInstance
-    ) {}
+    public function __construct() {}
 
     public function index()
     {
-        $attendances = $this->fingerprintInstance->getAttendance();
+        $fingerprints = Fingerprint::all();
+        $attendances = collect([]);
+        foreach ($fingerprints as $fingerprint) {
+            $device = new FingerprintInstance($fingerprint);
+            if (!$device->check())  continue;
+            $deviceData = $device->getAttendance();
+            $attendances->push(...$deviceData);
+        }
         return view('admin.absence.index', compact('attendances'));
     }
 }

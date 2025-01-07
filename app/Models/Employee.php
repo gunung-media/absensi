@@ -56,6 +56,7 @@ class Employee extends Model
         'position_id',
         'work_unit_id',
         'is_active',
+        'fingerprint_id'
     ];
 
     public function position(): BelongsTo
@@ -66,5 +67,10 @@ class Employee extends Model
     public function workUnit(): BelongsTo
     {
         return $this->belongsTo(WorkUnit::class);
+    }
+
+    public function fingerprint(): BelongsTo
+    {
+        return $this->belongsTo(Fingerprint::class);
     }
 }

@@ -21,11 +21,13 @@ return new class extends Migration
             $table->date('working_period')->nullable();
             $table->unsignedBigInteger('position_id')->nullable();
             $table->unsignedBigInteger('work_unit_id')->nullable();
+            $table->unsignedBigInteger('fingerprint_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('position_id')->references('id')->on('positions')->nullOnDelete();
             $table->foreign('work_unit_id')->references('id')->on('work_units')->nullOnDelete();
+            $table->foreign('fingerprint_id')->references('id')->on('fingerprints')->nullOnDelete();
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Instances;
 
 use App\Models\Employee;
+use App\Models\Fingerprint;
 use Carbon\Carbon;
 use Jmrashed\Zkteco\Lib\ZKTeco;
 
@@ -10,10 +11,11 @@ class FingerprintInstance
 {
     public ZKTeco $zk;
 
+    public function __construct(protected Fingerprint $fingerprint) {}
 
     public function init()
     {
-        $zk = new ZKTeco('192.168.1.201', 4370);
+        $zk = new ZKTeco($this->fingerprint->ip, $this->fingerprint->port);
         $this->zk = $zk;
         $this->zk->connect();
         $this->zk->disableDevice();
@@ -34,7 +36,7 @@ class FingerprintInstance
                 throw new \Exception('Operation timed out');
             });
 
-            pcntl_alarm(2);
+            pcntl_alarm(1);
 
             $this->init();
             $this->disable();
@@ -42,6 +44,7 @@ class FingerprintInstance
             pcntl_alarm(0);
             return true;
         } catch (\Throwable $th) {
+            session()->flash('errorToast', "Mesin '{$this->fingerprint->name}' offline");
             return false;
         }
     }
@@ -134,7 +137,8 @@ class FingerprintInstance
                     'time' => $carbon->format('H:i:s'),
                     'state' => $this->getAttState($attendance['state']),
                     'type' => $this->getAttType($attendance['type']),
-                    'employee' => Employee::find($attendance['id'])
+                    'employee' => Employee::find($attendance['id']),
+                    'fingerprint' => $this->fingerprint->name,
                 ];
             });
     }

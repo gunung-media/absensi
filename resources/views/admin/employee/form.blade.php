@@ -111,6 +111,23 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Mesin Fingerprint</label>
+                                <div class="col-sm-4">
+                                    <select class="form-control" name="fingerprint_id" required>
+                                        <option value="">Pilih Mesin Fingerprint</option>
+                                        @forelse ($fingerprints as $fingerprint)
+                                            <option value="{{ $fingerprint->id }}"
+                                                {{ isset($employee) && $employee->fingerprint_id == $fingerprint->id ? 'selected' : '' }}>
+                                                {{ $fingerprint->name }}
+                                            </option>
+                                        @empty
+                                            <option disabled>Silahkan Mesin Fingerprint Terlebih Dahulu</option>
+                                        @endforelse
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label for="inputEmail3" class="col-sm-2 control-label">Status</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="is_active" required>

@@ -14,6 +14,7 @@
                             <th style="background:#f39c12;">JAM</th>
                             <th style="background:#f39c12;">MODE VERIFIKASI</th>
                             <th style="background:#f39c12;">STATUS ABSENSI</th>
+                            <th style="background:#f39c12;">MESIN FINGERPRINT</th>
                             <th style="background:#f39c12;">NAMA LENGKAP</th>
                             <th style="background:#f39c12;">USERNAME</th>
                             <th style="background:#f39c12;">DEPARTEMEN</th>
@@ -26,6 +27,7 @@
                                 <td>{{ $attendance['time'] }}</td>
                                 <td>{{ $attendance['state'] }}</td>
                                 <td>{{ $attendance['type'] }}</td>
+                                <td>{{ $attendance['fingerprint'] }}</td>
                                 <td>{{ $attendance['employee']->name }}</td>
                                 <td>{{ $attendance['employee']->username }}</td>
                                 <td>{{ $attendance['employee']->workUnit?->name ?? '-' }}</td>

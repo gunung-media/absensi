@@ -9,12 +9,16 @@ use Illuminate\Http\Request;
 
 class FingerprintController extends Controller
 {
-    public function __construct(
-        protected FingerprintInstance $fingerprintInstance,
-    ) {}
+    public function __construct() {}
     public function index()
     {
-        $this->fingerprintInstance->test();
+        $fingerprints = Fingerprint::all();
+        foreach ($fingerprints as $fingerprint) {
+            $device = new FingerprintInstance($fingerprint);
+            if ($device->check()) {
+                $device->test();
+            }
+        }
         return view('admin.fingerprint.index', [
             'fingerprints' => Fingerprint::all()
         ]);
@@ -30,11 +34,13 @@ class FingerprintController extends Controller
         $request->validate([
             'name' => 'required',
             'ip' => 'required',
+            'port' => 'required',
         ]);
 
         Fingerprint::create([
             'name' => $request->name,
             'ip' => $request->ip,
+            'port' => $request->port
         ]);
 
         return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil ditambahkan');
@@ -54,11 +60,13 @@ class FingerprintController extends Controller
         $request->validate([
             'name' => 'required',
             'ip' => 'required',
+            'port' => 'required',
         ]);
 
         $fingerprint->update([
             'name' => $request->name,
             'ip' => $request->ip,
+            'port' => $request->port
         ]);
 
         return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil diubah');
