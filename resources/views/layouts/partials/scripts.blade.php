@@ -52,6 +52,9 @@
                 showConfirmButton: false,
                 timer: 3000 // Toast will disappear after 3 seconds
             });
+            @php
+                session()->forget('errorToast');
+            @endphp
         @endif
     });
 </script>

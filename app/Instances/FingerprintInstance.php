@@ -2,7 +2,6 @@
 
 namespace App\Instances;
 
-use App\Jobs\CheckOperation;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Jmrashed\Zkteco\Lib\ZKTeco;
@@ -29,11 +28,20 @@ class FingerprintInstance
     public function check(): bool
     {
         try {
-            CheckOperation::dispatchSync('192.168.1.201', 4370);
+            pcntl_async_signals(true);
+
+            pcntl_signal(SIGALRM, function () {
+                throw new \Exception('Operation timed out');
+            });
+
+            pcntl_alarm(2);
+
+            $this->init();
+            $this->disable();
+
+            pcntl_alarm(0);
             return true;
         } catch (\Throwable $th) {
-            echo $th->getMessage();
-            \Log::error('Error in operation: ' . $th->getMessage());
             return false;
         }
     }

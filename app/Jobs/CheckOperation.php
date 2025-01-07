@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,11 +21,14 @@ class CheckOperation implements ShouldQueue
         try {
             $zk = new ZKTeco($this->ip, $this->port);
             $zk->connect();
+
             $zk->disableDevice();
             $zk->enableDevice();
+
             $zk->disconnect();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             \Log::error('Check operation failed: ' . $e->getMessage());
+            // If the connection or operation fails, throw the exception to indicate failure
             throw $e;
         }
     }
