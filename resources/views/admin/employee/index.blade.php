@@ -8,7 +8,7 @@
 
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <i class="fa fa-th"></i> List Data Karyawan
+            <i class="fa fa-th"></i> List Data Pegawai
         </div>
         <div class="panel-body" id="panel-body">
             <div class="table-responsive" style="overflow-x:auto;">

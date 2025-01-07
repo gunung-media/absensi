@@ -32,7 +32,7 @@
                     <li><a href="{{ route('admin.position.index') }}">Data Jabatan</a></li>
                     <li><a href="{{ route('admin.work-unit.index') }}">Data Satuan Kerja</a></li>
                     <li class="{{ activeRoute('admin.employee.index') }}"><a
-                            href="{{ route('admin.employee.index') }}">Data Karyawan</a></li>
+                            href="{{ route('admin.employee.index') }}">Data Pegawai</a></li>
                     <li><a href="{{ route('admin.information.index') }}">Data Keterangan</a></li>
                     <li><a href="{{ route('admin.fingerprint.index') }}">Data Mesin Fingerprint</a></li>
                 </ul>
