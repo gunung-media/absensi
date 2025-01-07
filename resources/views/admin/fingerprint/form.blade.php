@@ -39,6 +39,15 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">Port</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="name" name="port" class="form-control"
+                                        placeholder="Masukkan Nama" required
+                                        value="{{ isset($fingerprint) ? $fingerprint->port : old('port') }}">
+                                </div>
+                            </div>
+
                             <div class="box-footer">
                                 <button type="reset" class="btn btn-default btn-sm pull-right"><i
                                         class="fa fa-refresh"></i> Reset</button>

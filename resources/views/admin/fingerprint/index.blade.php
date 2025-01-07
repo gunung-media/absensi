@@ -18,6 +18,7 @@
                             <th style="background:#f39c12;">NO</th>
                             <th style="background:#f39c12;">MESIN FINGERPRINT</th>
                             <th style="background:#f39c12;">IP/MAC ADDRESS</th>
+                            <th style="background:#f39c12;">PORT</th>
                             <th style="background:#f39c12;">PERINTAH</th>
                         </tr>
                     </thead>
@@ -27,6 +28,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $fingerprint->name }}</td>
                                 <td>{{ $fingerprint->ip }}</td>
+                                <td>{{ $fingerprint->port }}</td>
                                 <td>
                                     <a href="{{ route('admin.fingerprint.edit', $fingerprint->id) }}"
                                         class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>

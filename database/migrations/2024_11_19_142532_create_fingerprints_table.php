@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('ip');
+            $table->string('port');
             $table->timestamps();
         });
     }
