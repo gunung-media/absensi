@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\Fingerprint;
 use App\Models\User;
 use App\Models\WorkUnit;
 
@@ -15,7 +16,8 @@ class DashboardController extends Controller
         return view('admin.dashboard', [
             'admin' => User::all()->count(),
             'employee' => Employee::active()->get()->count(),
-            'workUnit' => WorkUnit::active()->get()->count()
+            'workUnit' => WorkUnit::active()->get()->count(),
+            'fingerprint' => Fingerprint::all()->count()
         ]);
     }
 }
