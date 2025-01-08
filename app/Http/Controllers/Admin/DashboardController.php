@@ -7,11 +7,12 @@ use App\Models\Employee;
 use App\Models\Fingerprint;
 use App\Models\User;
 use App\Models\WorkUnit;
+use Illuminate\Contracts\View\View;
 
 class DashboardController extends Controller
 {
     public function __construct() {}
-    public function index()
+    public function index(): View
     {
         return view('admin.dashboard', [
             'admin' => User::all()->count(),

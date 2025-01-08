@@ -34,7 +34,7 @@ class WorkUnitController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.work-unit.index')->with('success', 'Satuan Kerja berhasil ditambahkan');
+        return redirect()->route('admin.work-unit.index')->with('success', 'Satuan Kerja berhasil ditambahkan');
     }
 
 
@@ -57,12 +57,12 @@ class WorkUnitController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.work-unit.index')->with('success', 'Satuan Kerja berhasil diubah');
+        return redirect()->route('admin.work-unit.index')->with('success', 'Satuan Kerja berhasil diubah');
     }
 
     public function destroy(WorkUnit $workUnit): RedirectResponse
     {
         $workUnit->delete();
-        return redirect()->route('admin.master.work-unit.index')->with('success', 'Satuan Kerja berhasil dihapus');
+        return redirect()->route('admin.work-unit.index')->with('success', 'Satuan Kerja berhasil dihapus');
     }
 }

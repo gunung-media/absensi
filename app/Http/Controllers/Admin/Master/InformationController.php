@@ -34,7 +34,7 @@ class InformationController extends Controller
             'code' => $request->code,
         ]);
 
-        return redirect()->route('admin.master.information.index')->with('success', 'Information berhasil ditambahkan');
+        return redirect()->route('admin.information.index')->with('success', 'Information berhasil ditambahkan');
     }
 
 
@@ -58,12 +58,12 @@ class InformationController extends Controller
             'code' => $request->code,
         ]);
 
-        return redirect()->route('admin.master.information.index')->with('success', 'Information berhasil diubah');
+        return redirect()->route('admin.information.index')->with('success', 'Information berhasil diubah');
     }
 
     public function destroy(Information $information): RedirectResponse
     {
         $information->delete();
-        return redirect()->route('admin.master.information.index')->with('success', 'Information berhasil dihapus');
+        return redirect()->route('admin.information.index')->with('success', 'Information berhasil dihapus');
     }
 }

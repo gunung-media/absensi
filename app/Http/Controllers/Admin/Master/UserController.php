@@ -36,7 +36,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return redirect()->route('admin.master.user.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.user.index')->with('success', 'User berhasil ditambahkan');
     }
 
 
@@ -60,12 +60,12 @@ class UserController extends Controller
             'password' => $request->password ? bcrypt($request->password) : $user->password,
         ]);
 
-        return redirect()->route('admin.master.user.index')->with('success', 'User berhasil diubah');
+        return redirect()->route('admin.user.index')->with('success', 'User berhasil diubah');
     }
 
     public function destroy(User $user): RedirectResponse
     {
         $user->delete();
-        return redirect()->route('admin.master.user.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('admin.user.index')->with('success', 'User berhasil dihapus');
     }
 }

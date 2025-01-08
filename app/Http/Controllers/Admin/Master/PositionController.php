@@ -34,7 +34,7 @@ class PositionController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.position.index')->with('success', 'Position berhasil ditambahkan');
+        return redirect()->route('admin.position.index')->with('success', 'Position berhasil ditambahkan');
     }
 
 
@@ -58,12 +58,12 @@ class PositionController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.position.index')->with('success', 'Position berhasil diubah');
+        return redirect()->route('admin.position.index')->with('success', 'Position berhasil diubah');
     }
 
     public function destroy(Position $position): RedirectResponse
     {
         $position->delete();
-        return redirect()->route('admin.master.position.index')->with('success', 'Position berhasil dihapus');
+        return redirect()->route('admin.position.index')->with('success', 'Position berhasil dihapus');
     }
 }

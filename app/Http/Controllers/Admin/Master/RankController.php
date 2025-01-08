@@ -34,7 +34,7 @@ class RankController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.rank.index')->with('success', 'Rank berhasil ditambahkan');
+        return redirect()->route('admin.rank.index')->with('success', 'Rank berhasil ditambahkan');
     }
 
 
@@ -58,12 +58,12 @@ class RankController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.rank.index')->with('success', 'Rank berhasil diubah');
+        return redirect()->route('admin.rank.index')->with('success', 'Rank berhasil diubah');
     }
 
     public function destroy(Rank $rank): RedirectResponse
     {
         $rank->delete();
-        return redirect()->route('admin.master.rank.index')->with('success', 'Rank berhasil dihapus');
+        return redirect()->route('admin.rank.index')->with('success', 'Rank berhasil dihapus');
     }
 }

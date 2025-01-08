@@ -34,7 +34,7 @@ class PlacementController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.placement.index')->with('success', 'Placement berhasil ditambahkan');
+        return redirect()->route('admin.placement.index')->with('success', 'Placement berhasil ditambahkan');
     }
 
 
@@ -58,12 +58,12 @@ class PlacementController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.master.placement.index')->with('success', 'Placement berhasil diubah');
+        return redirect()->route('admin.placement.index')->with('success', 'Placement berhasil diubah');
     }
 
     public function destroy(Placement $placement): RedirectResponse
     {
         $placement->delete();
-        return redirect()->route('admin.master.placement.index')->with('success', 'Placement berhasil dihapus');
+        return redirect()->route('admin.placement.index')->with('success', 'Placement berhasil dihapus');
     }
 }

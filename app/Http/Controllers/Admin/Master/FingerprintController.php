@@ -45,7 +45,7 @@ class FingerprintController extends Controller
             'port' => $request->port
         ]);
 
-        return redirect()->route('admin.master.fingerprint.index')->with('success', 'Fingerprint berhasil ditambahkan');
+        return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil ditambahkan');
     }
 
 
@@ -71,12 +71,12 @@ class FingerprintController extends Controller
             'port' => $request->port
         ]);
 
-        return redirect()->route('admin.master.fingerprint.index')->with('success', 'Fingerprint berhasil diubah');
+        return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil diubah');
     }
 
     public function destroy(Fingerprint $fingerprint): RedirectResponse
     {
         $fingerprint->delete();
-        return redirect()->route('admin.master.fingerprint.index')->with('success', 'Fingerprint berhasil dihapus');
+        return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil dihapus');
     }
 }
