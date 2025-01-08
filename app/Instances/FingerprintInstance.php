@@ -131,13 +131,14 @@ class FingerprintInstance
             })
             ->map(function ($attendance) {
                 $carbon = Carbon::createFromFormat('Y-m-d H:i:s', $attendance['timestamp']);
+                $employee = Employee::find($attendance['id']);
                 return [
                     ...$attendance,
                     'date' => $carbon->format('d, F, Y'),
                     'time' => $carbon->format('H:i:s'),
                     'state' => $this->getAttState($attendance['state']),
                     'type' => $this->getAttType($attendance['type']),
-                    'employee' => Employee::find($attendance['id']),
+                    'employee' => $employee,
                     'fingerprint' => $this->fingerprint->name,
                 ];
             });

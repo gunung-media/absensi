@@ -121,8 +121,8 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <input type="checkbox" id="is_field_worker" name="is_field_worker"
-                                    value="{{ isset($employee) ? $employee->is_field_worker : old('is_field_worker') }}">
+                                <input type="checkbox" id="is_field_worker" name="is_field_worker" value="1"
+                                    {{ isset($employee) && $employee->is_field_worker == 1 ? 'checked' : (old('is_field_worker') ? 'checked' : '') }} />
                                 <label class="control-label" for="is_field_worker">Pekerja Lapangan?</label>
                             </div>
                         </div>

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('nomor_karpeg')->nullable();
             $table->string('tmt_kenaikan_pangkat_selanjutnya')->nullable();
 
-            $table->boolean('is_field_worker')->default(false);
+            $table->boolean('is_field_worker')->default(false)->nullable();
 
             $table->unsignedBigInteger('position_id')->nullable();
             $table->unsignedBigInteger('work_unit_id')->nullable();

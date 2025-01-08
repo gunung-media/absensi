@@ -103,7 +103,7 @@ class EmployeeController extends Controller
 
         DB::beginTransaction();
         try {
-            $empy = Employee::create($validate);
+            $empy = Employee::create([...$validate, 'is_field_worker' => $request->has('is_field_worker') ? 1 : 0]);
 
             $device = new FingerprintInstance(Fingerprint::find($request->fingerprint_id));
             if ($device->check()) {
@@ -163,7 +163,7 @@ class EmployeeController extends Controller
 
         DB::beginTransaction();
         try {
-            $employee->update($validate);
+            $employee->update([...$validate, 'is_field_worker' => $request->has('is_field_worker') ? 1 : 0]);
 
             $device = new FingerprintInstance(Fingerprint::find($request->fingerprint_id));
             if ($device->check()) {

@@ -16,8 +16,8 @@
                             <th style="background:#f39c12;">STATUS ABSENSI</th>
                             <th style="background:#f39c12;">MESIN FINGERPRINT</th>
                             <th style="background:#f39c12;">NAMA LENGKAP</th>
-                            <th style="background:#f39c12;">USERNAME</th>
-                            <th style="background:#f39c12;">DEPARTEMEN</th>
+                            <th style="background:#f39c12;">SATUAN KERJA </th>
+                            <th style="background:#f39c12;">SHIFT KERJA</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -26,11 +26,24 @@
                                 <td>{{ $attendance['date'] }}</td>
                                 <td>{{ $attendance['time'] }}</td>
                                 <td>{{ $attendance['state'] }}</td>
-                                <td>{{ $attendance['type'] }}</td>
+                                <td>
+                                    <p> {{ $attendance['type'] }} </p>
+                                    @php
+                                        $late = \Carbon\Carbon::createFromFormat('H:i:s', $attendance['time'])->gt(
+                                            \Carbon\Carbon::createFromFormat(
+                                                'H:i:s',
+                                                $attendance['employee']->workShift?->start ?? '08:00:00',
+                                            ),
+                                        );
+                                    @endphp
+                                    <p>{{ $late ? 'Telat' : '' }}</p>
+                                </td>
                                 <td>{{ $attendance['fingerprint'] }}</td>
                                 <td>{{ $attendance['employee']->name ?? 'User Sudah Dihapus' }}</td>
-                                <td>{{ $attendance['employee']->username ?? 'User Sudah Dihapus' }}</td>
                                 <td>{{ $attendance['employee']->workUnit?->name ?? '-' }}</td>
+                                <td>{{ $attendance['employee']->workShift?->name ?? '' }}
+                                    {{ ($attendance['employee']->workShift?->start ?? '08:00:00') . '-' . ($attendance['employee']->workShift?->end ?? '17:00:00') }}
+                                </td>
                             </tr>
                         @empty
                             <tr>

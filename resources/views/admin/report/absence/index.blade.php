@@ -99,7 +99,12 @@
                                                     fn($att) => Carbon\Carbon::createFromFormat(
                                                         'H:i:s',
                                                         $att['time'],
-                                                    )->gt(Carbon\Carbon::createFromFormat('H:i:s', '08:00:00')),
+                                                    )->gt(
+                                                        Carbon\Carbon::createFromFormat(
+                                                            'H:i:s',
+                                                            $item['employee']->workShift?->start ?? '08:00:00',
+                                                        ),
+                                                    ),
                                                 );
                                                 if ($late) {
                                                     $totalTelat++;
