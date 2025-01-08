@@ -115,6 +115,14 @@ class FingerprintInstance
         }
     }
 
+    public function getAttendanceRaw(array $params = [])
+    {
+        $this->init();
+        $attendances = $this->zk->getAttendance();
+        $this->disable();
+        return $attendances;
+    }
+
     public function getAttendance(array $params = [])
     {
         $this->init();

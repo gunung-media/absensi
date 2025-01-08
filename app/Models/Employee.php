@@ -129,8 +129,8 @@ class Employee extends Model
         return $this->belongsTo(WorkShift::class);
     }
 
-    public function fieldAbsences(): HasMany
+    public function absences(): HasMany
     {
-        return $this->hasMany(FieldAbsence::class);
+        return $this->hasMany(Absence::class);
     }
 }

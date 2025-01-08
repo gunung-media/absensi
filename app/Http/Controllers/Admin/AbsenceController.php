@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Instances\FingerprintInstance;
+use App\Models\Absence;
 use App\Models\Employee;
-use App\Models\FieldAbsence;
 use App\Models\Fingerprint;
 
 class AbsenceController extends Controller
@@ -14,17 +14,8 @@ class AbsenceController extends Controller
 
     public function index()
     {
-        $fingerprints = Fingerprint::all();
-        $fieldAbsences = FieldAbsence::all();
-        $attendances = collect([]);
-        foreach ($fingerprints as $fingerprint) {
-            $device = new FingerprintInstance($fingerprint);
-            if (!$device->check())  continue;
-            $deviceData = $device->getAttendance();
-            $attendances->push(...$deviceData);
-        }
-
-        return view('admin.absence.index', compact('attendances', 'fieldAbsences'));
+        $absences = Absence::all();
+        return view('admin.absence.index', compact('absences'));
     }
 
     public function create()
@@ -39,17 +30,48 @@ class AbsenceController extends Controller
         $validated = request()->validate([
             'timestamp' => 'required',
             'employee_id' => 'required',
+            'fingerprint_id' => 'nullable',
+            'state' => 'nullable',
+            'type' => 'nullable',
         ]);
 
-        FieldAbsence::create($validated);
+        Absence::create($validated);
 
         return redirect()->route('admin.absence.index')->with('success', 'Absensi berhasil ditambahkan');
     }
 
     public function destroy($id)
     {
-        $fieldAbsence = FieldAbsence::find($id);
-        $fieldAbsence->delete();
+        $absence = Absence::find($id);
+        $absence->delete();
         return redirect()->route('admin.absence.index')->with('success', 'Absensi berhasil dihapus');
+    }
+
+    public function sync()
+    {
+        $fingerprints = Fingerprint::all();
+        $attendances = collect([]);
+        foreach ($fingerprints as $fingerprint) {
+            $device = new FingerprintInstance($fingerprint);
+            if (!$device->check())  continue;
+            $deviceData = collect($device->getAttendanceRaw())->map(function ($attendance) use ($fingerprint) {
+                return [
+                    'employee_id' => $attendance['id'],
+                    'fingerprint_id' => $fingerprint->id,
+                    'timestamp' => $attendance['timestamp'],
+                    'state' => $attendance['state'],
+                    'type' => $attendance['type'],
+                ];
+            });
+            $attendances->push(...$deviceData);
+        }
+
+        foreach ($attendances as $att) {
+            if (Absence::where('timestamp', $att['timestamp'])->where('fingerprint_id', $att['fingerprint_id'])->where('employee_id', $att['employee_id'])->exists())
+                continue;
+            Absence::create($att);
+        }
+
+        return redirect()->route('admin.absence.index')->with('success', 'Berhasil Sinkron dengan Mesin Fingerprint');
     }
 }

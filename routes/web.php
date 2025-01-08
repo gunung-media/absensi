@@ -19,6 +19,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
         Route::resource('absence', 'AbsenceController')->only('index', 'create', 'store', 'destroy');
+        Route::get('abs_sync', 'AbsenceController@sync')->name('absence.sync');
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/', 'ReportController@index')->name('index');
             Route::get('/absence', 'ReportController@absence')->name('absence');
