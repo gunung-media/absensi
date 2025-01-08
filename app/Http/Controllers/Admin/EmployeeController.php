@@ -19,15 +19,17 @@ class EmployeeController extends Controller
 {
     public function __construct() {}
 
-    public function index(): View
+    public function index()
     {
         $employees = Employee::all();
         $fingerprints = Fingerprint::all();
+        $needRefresh = false;
 
         foreach ($fingerprints as $fingerprint) {
             $device = new FingerprintInstance($fingerprint);
             if ($device->check()) {
                 $employeeFromDevice = $device->getUsers();
+
                 foreach ($employeeFromDevice as $emp) {
                     if (!$employees->some(fn($employee) => $employee->id === $emp['uid'])) {
                         Employee::create([
@@ -36,9 +38,23 @@ class EmployeeController extends Controller
                             'username' => $emp['name'],
                             'fingerprint_id' => $fingerprint->id
                         ]);
+
+                        $needRefresh = true;
                     }
                 }
+
+                foreach ($employees->filter(fn($e) => !in_array($e->id, collect($employeeFromDevice)->pluck('uid')->toArray())) as $e) {
+                    $device->setUser(
+                        uid: $e->id,
+                        name: $e->name,
+                        password: $e->username
+                    );
+                }
             }
+        }
+
+        if ($needRefresh) {
+            return redirect()->route('admin.employee.index')->with('success', 'Employee berhasil disinkronisasi');
         }
 
 

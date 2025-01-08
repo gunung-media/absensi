@@ -28,8 +28,8 @@
                                 <td>{{ $attendance['state'] }}</td>
                                 <td>{{ $attendance['type'] }}</td>
                                 <td>{{ $attendance['fingerprint'] }}</td>
-                                <td>{{ $attendance['employee']->name }}</td>
-                                <td>{{ $attendance['employee']->username }}</td>
+                                <td>{{ $attendance['employee']->name ?? 'User Sudah Dihapus' }}</td>
+                                <td>{{ $attendance['employee']->username ?? 'User Sudah Dihapus' }}</td>
                                 <td>{{ $attendance['employee']->workUnit?->name ?? '-' }}</td>
                             </tr>
                         @empty

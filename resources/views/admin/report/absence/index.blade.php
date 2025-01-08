@@ -85,7 +85,7 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item['employee']['name'] }}</td>
+                                    <td>{{ $item['employee']['name'] ?? 'User Sudah Dihapus' }}</td>
                                     @foreach (range(1, $countDay) as $i)
                                         @php
                                             $attendance = $item['attendances'][$i] ?? null;
