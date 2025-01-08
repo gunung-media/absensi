@@ -43,21 +43,30 @@
             });
         @endif
 
-        @if (session('errorToast'))
-            Swal.fire({
-                toast: true,
-                position: 'bottom-end',
-                title: "{{ session('errorToast') }}",
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 3000 // Toast will disappear after 3 seconds
-            });
-            @php
-                session()->forget('errorToast');
-            @endphp
-        @endif
     });
 </script>
+
+@if (session('errorToasts'))
+    <script>
+        const errorToasts = @json(session('errorToasts'));
+
+        errorToasts.forEach((errorToast, index) => {
+            setTimeout(() => {
+                Swal.fire({
+                    toast: true,
+                    position: 'bottom-end',
+                    title: errorToast,
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }, index * 2010); // Delay each alert to show sequentially
+        });
+    </script>
+    @php
+        session()->forget('errorToasts');
+    @endphp
+@endif
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

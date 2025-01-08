@@ -3,7 +3,7 @@
 @section('content')
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <i class="fa fa-pencil"></i> Form Input Karyawan
+            <i class="fa fa-pencil"></i> Form Input Pegawai
             <a href="{{ route('admin.employee.index') }}"><button type="button" class="btn btn-sm"
                     style="float:right;background-color:#ffffff;color:#000;line-height:0.8">
                     <i class="fa fa-chevron-circle-left"></i> Kembali
