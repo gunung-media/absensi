@@ -6,8 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Instances\FingerprintInstance;
 use App\Models\Employee;
 use App\Models\Fingerprint;
+use App\Models\Placement;
 use App\Models\Position;
+use App\Models\Rank;
 use App\Models\WorkUnit;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -15,7 +19,7 @@ class EmployeeController extends Controller
 {
     public function __construct() {}
 
-    public function index()
+    public function index(): View
     {
         $employees = Employee::all();
         $fingerprints = Fingerprint::all();
@@ -43,16 +47,18 @@ class EmployeeController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('admin.employee.form', [
             'positions' => Position::active()->get(),
             'workUnits' => WorkUnit::active()->get(),
+            'ranks' => Rank::active()->get(),
+            'placements' => Placement::active()->get(),
             'fingerprints' => Fingerprint::get(),
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validate = $request->validate([
             'type' => 'required|in:pns,ppnpn', // Validate type (either pns or ppnpn)
@@ -97,17 +103,19 @@ class EmployeeController extends Controller
     }
 
 
-    public function edit(Employee $employee)
+    public function edit(Employee $employee): View
     {
         return view('admin.employee.form', [
             'employee' => $employee,
             'positions' => Position::active()->get(),
             'workUnits' => WorkUnit::active()->get(),
+            'ranks' => Rank::active()->get(),
+            'placements' => Placement::active()->get(),
             'fingerprints' => Fingerprint::get(),
         ]);
     }
 
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, Employee $employee): RedirectResponse
     {
         $validate = $request->validate([
             'type' => 'required|in:pns,ppnpn', // Validate type (either pns or ppnpn)
@@ -150,7 +158,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee): RedirectResponse
     {
         DB::beginTransaction();
         try {
