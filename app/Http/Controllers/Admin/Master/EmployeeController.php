@@ -54,33 +54,30 @@ class EmployeeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'username' => 'required|unique:employees',
-            'email' => 'required|unique:employees',
-            'phone' => 'required',
-            'dob' => 'required|date',
-            'working_period' => 'required|date',
-            'position_id' => 'required|exists:positions,id',
-            'work_unit_id' => 'required|exists:work_units,id',
-            'fingerprint_id' => 'required|exists:fingerprints,id',
-            'is_active' => 'required',
+        $validate = $request->validate([
+            'type' => 'required|in:pns,ppnpn', // Validate type (either pns or ppnpn)
+            'name' => 'required', // Name of the employee
+            'nip' => 'nullable|unique:employees,nip',
+            'username' => 'nullable|unique:employees,username',
+            'last_education' => 'nullable|string', // Last education (optional, string type)
+            'pob' => 'nullable|string', // Place of birth (optional, string type)
+            'dob' => 'nullable|date', // Date of birth (optional, valid date)
+            'kelas_jabatan' => 'nullable|string', // Jabatan class (optional, string type)
+            'sk_tmt_jabatan' => 'nullable|string', // TMT jabatan (optional, string type)
+            'sk_tmt_golongan' => 'nullable|string', // TMT golongan (optional, string type)
+            'nomor_karpeg' => 'nullable|string', // Karpeg number (optional, string type)
+            'tmt_kenaikan_pangkat_selanjutnya' => 'nullable|string', // TMT kenaikan pangkat (optional, string type)
+            'position_id' => 'nullable|exists:positions,id', // Valid position ID, nullable
+            'work_unit_id' => 'required|exists:work_units,id', // Valid work unit ID, nullable
+            'rank_id' => 'nullable|exists:ranks,id', // Valid rank ID, nullable
+            'placement_id' => 'nullable|exists:placements,id', // Valid placement ID, nullable
+            'fingerprint_id' => 'required|exists:fingerprints,id', // Valid fingerprint ID, nullable
+            'is_active' => 'nullable|boolean', // Boolean value for active status, nullable
         ]);
 
         DB::beginTransaction();
         try {
-            $empy = Employee::create([
-                'name' => $request->name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'dob' => $request->dob,
-                'working_period' => $request->working_period,
-                'position_id' => $request->position_id,
-                'work_unit_id' => $request->work_unit_id,
-                'is_active' => $request->is_active,
-                'fingerprint_id' => $request->fingerprint_id
-            ]);
+            $empy = Employee::create($validate);
 
             $device = new FingerprintInstance(Fingerprint::find($request->fingerprint_id));
             if ($device->check()) {
@@ -112,33 +109,30 @@ class EmployeeController extends Controller
 
     public function update(Request $request, Employee $employee)
     {
-        $request->validate([
-            'name' => 'required',
-            'username' => 'required|unique:employees,username,' . $employee->id,
-            'email' => 'required|unique:employees,email,' . $employee->id,
-            'phone' => 'required',
-            'dob' => 'required|date',
-            'working_period' => 'required|date',
-            'position_id' => 'required|exists:positions,id',
-            'work_unit_id' => 'required|exists:work_units,id',
-            'fingerprint_id' => 'required|exists:fingerprints,id',
-            'is_active' => 'required',
+        $validate = $request->validate([
+            'type' => 'required|in:pns,ppnpn', // Validate type (either pns or ppnpn)
+            'name' => 'required', // Name of the employee
+            'nip' => 'nullable|unique:employees,nip,' . $employee->id, // NIP is optional but unique if provided
+            'username' => 'nullable|unique:employees,username,' . $employee->id, // Username is nullable and unique
+            'last_education' => 'nullable|string', // Last education (optional, string type)
+            'pob' => 'nullable|string', // Place of birth (optional, string type)
+            'dob' => 'nullable|date', // Date of birth (optional, valid date)
+            'kelas_jabatan' => 'nullable|string', // Jabatan class (optional, string type)
+            'sk_tmt_jabatan' => 'nullable|string', // TMT jabatan (optional, string type)
+            'sk_tmt_golongan' => 'nullable|string', // TMT golongan (optional, string type)
+            'nomor_karpeg' => 'nullable|string', // Karpeg number (optional, string type)
+            'tmt_kenaikan_pangkat_selanjutnya' => 'nullable|string', // TMT kenaikan pangkat (optional, string type)
+            'position_id' => 'nullable|exists:positions,id', // Valid position ID, nullable
+            'work_unit_id' => 'required|exists:work_units,id', // Valid work unit ID, nullable
+            'rank_id' => 'nullable|exists:ranks,id', // Valid rank ID, nullable
+            'placement_id' => 'nullable|exists:placements,id', // Valid placement ID, nullable
+            'fingerprint_id' => 'required|exists:fingerprints,id', // Valid fingerprint ID, nullable
+            'is_active' => 'nullable|boolean', // Boolean value for active status, nullable
         ]);
 
         DB::beginTransaction();
         try {
-            $employee->update([
-                'name' => $request->name,
-                'username' => $request->username,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'dob' => $request->dob,
-                'working_period' => $request->working_period,
-                'position_id' => $request->position_id,
-                'work_unit_id' => $request->work_unit_id,
-                'is_active' => $request->is_active,
-                'fingerprint_id' => $request->fingerprint_id
-            ]);
+            $employee->update($validate);
 
             $device = new FingerprintInstance(Fingerprint::find($request->fingerprint_id));
             if ($device->check()) {

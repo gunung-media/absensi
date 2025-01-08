@@ -31,11 +31,11 @@
                     <li><a href="{{ route('admin.user.index') }}">Data Admin</a></li>
                     <li><a href="{{ route('admin.position.index') }}">Data Jabatan</a></li>
                     <li><a href="{{ route('admin.work-unit.index') }}">Data Satuan Kerja</a></li>
-                    <li class="{{ activeRoute('admin.employee.index') }}"><a
-                            href="{{ route('admin.employee.index') }}">Data Pegawai</a></li>
                     <li><a href="{{ route('admin.information.index') }}">Data Keterangan</a></li>
                     <li><a href="{{ route('admin.fingerprint.index') }}">Data Mesin Fingerprint</a></li>
                 </ul>
+            </li>
+            <li><a href="{{ route('admin.employee.index') }}"><i class="fa fa-users"></i> <span>DATA PEGAWAI</span></a>
             </li>
             <li><a href="{{ route('admin.absence.index') }}"><i class="fa fa-book"></i> <span>DATA ABSENSI</span></a>
             </li>

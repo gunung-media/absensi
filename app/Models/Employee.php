@@ -47,16 +47,23 @@ class Employee extends Model
 
     protected $fillable = [
         'id',
+        'type',
         'name',
+        'nip',
         'username',
-        'email',
-        'phone',
+        'last_education',
+        'pob',
         'dob',
-        'working_period',
+        'kelas_jabatan',
+        'sk_tmt_jabatan',
+        'sk_tmt_golongan',
+        'nomor_karpeg',
+        'tmt_kenaikan_pangkat_selanjutnya',
         'position_id',
         'work_unit_id',
-        'is_active',
-        'fingerprint_id'
+        'rank_id',
+        'placement_id',
+        'fingerprint_id',
     ];
 
     public function position(): BelongsTo
@@ -67,6 +74,16 @@ class Employee extends Model
     public function workUnit(): BelongsTo
     {
         return $this->belongsTo(WorkUnit::class);
+    }
+
+    public function rank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class);
+    }
+
+    public function placement(): BelongsTo
+    {
+        return $this->belongsTo(Placement::class);
     }
 
     public function fingerprint(): BelongsTo

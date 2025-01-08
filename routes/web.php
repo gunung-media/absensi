@@ -29,6 +29,8 @@ Route::prefix('admin')
                 Route::resource('user', 'UserController')->except('show');
                 Route::resource('work-unit', 'WorkUnitController')->except('show');
                 Route::resource('position', 'PositionController')->except('show');
+                Route::resource('rank', 'RankController')->except('show');
+                Route::resource('placement', 'PlacementController')->except('show');
                 Route::resource('information', 'InformationController')->except('show');
                 Route::resource('fingerprint', 'FingerprintController')->except('show');
                 Route::resource('employee', 'EmployeeController')->except('show');

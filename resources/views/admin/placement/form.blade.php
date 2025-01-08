@@ -3,8 +3,8 @@
 @section('content')
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <i class="fa fa-pencil"></i> Form Input Jabatan
-            <a href="{{ route('admin.position.index') }}"><button type="button" class="btn btn-sm"
+            <i class="fa fa-pencil"></i> Form Input Penggajian - Penempatan
+            <a href="{{ route('admin.placement.index') }}"><button type="button" class="btn btn-sm"
                     style="float:right;background-color:#ffffff;color:#000;line-height:0.8">
                     <i class="fa fa-chevron-circle-left"></i> Kembali
                 </button></a>
@@ -12,10 +12,10 @@
         <div class="panel-body" id="panel-body">
             <x-validation-alert />
             <form class="form-horizontal" name="myform" role="form"
-                action="{{ isset($position) ? route('admin.position.update', $position->id) : route('admin.position.store') }}"
+                action="{{ isset($placement) ? route('admin.placement.update', $placement->id) : route('admin.placement.store') }}"
                 method="POST" enctype="multipart/form-data">
                 @csrf
-                @if (isset($position))
+                @if (isset($placement))
                     @method('PUT')
                 @endif
                 <div class="box-body">
@@ -26,7 +26,7 @@
                                 <div class="col-sm-4">
                                     <input type="text" id="name" name="name" class="form-control"
                                         placeholder="Masukkan Nama" required
-                                        value="{{ isset($position) ? $position->name : old('name') }}">
+                                        value="{{ isset($placement) ? $placement->name : old('name') }}">
                                 </div>
                             </div>
 
@@ -35,10 +35,10 @@
                                 <div class="col-sm-4">
                                     <select class="form-control" name="is_active" required>
                                         <option value="1"
-                                            {{ isset($position) && $position->is_active ? 'selected' : '' }}> Aktif
+                                            {{ isset($placement) && $placement->is_active ? 'selected' : '' }}> Aktif
                                         </option>
                                         <option value="0"
-                                            {{ isset($position) && !$position->is_active ? 'selected' : '' }}> Non Aktif
+                                            {{ isset($placement) && !$placement->is_active ? 'selected' : '' }}> Non Aktif
                                         </option>
                                     </select>
                                 </div>
