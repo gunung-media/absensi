@@ -56,8 +56,7 @@
                             <div class="form-group" type="pns">
                                 <label class="control-label">NIP</label>
                                 <input type="text" id="nip" name="nip" class="form-control"
-                                    placeholder="Masukkan NIP" required
-                                    value="{{ isset($employee) ? $employee->nip : old('nip') }}">
+                                    placeholder="Masukkan NIP" value="{{ isset($employee) ? $employee->nip : old('nip') }}">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Username</label>
@@ -110,7 +109,7 @@
                         <div class="col-md-6 col-12">
                             <div class="form-group" type="pns">
                                 <label for="inputEmail3" class="control-label">Pangkat/Golongan</label>
-                                <select class="form-control" name="rank_id" required>
+                                <select class="form-control" name="rank_id">
                                     <option value="">Pilih Pangkat/Golongan</option>
                                     @forelse ($ranks as $rank)
                                         <option value="{{ $rank->id }}"
@@ -130,7 +129,7 @@
                             </div>
                             <div class="form-group" type="pns">
                                 <label for="inputEmail3" class="control-label">Jabatan</label>
-                                <select class="form-control" name="position_id" required>
+                                <select class="form-control" name="position_id">
                                     <option value="">Pilih Jabatan</option>
                                     @forelse ($positions as $position)
                                         <option value="{{ $position->id }}"
@@ -169,7 +168,7 @@
                             </div>
                             <div class="form-group" type="ppnpn">
                                 <label for="inputEmail3" class="control-label">Penggajian - Penempatan </label>
-                                <select class="form-control" name="placement_id" required>
+                                <select class="form-control" name="placement_id">
                                     <option value="">Pilih Penggajian - Penempatan </option>
                                     @forelse ($placements as $placement)
                                         <option value="{{ $placement->id }}"

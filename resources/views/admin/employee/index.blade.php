@@ -2,8 +2,9 @@
 
 @section('content')
     <div style="margin-bottom: 10px">
-        <a href="{{ route('admin.employee.create') }}"><button type="button" class="btn btn-default btn-sm"><i
-                    class="fa fa-plus"></i> Tambah</button></a>
+        <a href="{{ route('admin.employee.create') }}">
+            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah</button>
+        </a>
     </div>
 
     <div class="panel panel-primary">
@@ -16,14 +17,10 @@
                     <thead>
                         <tr>
                             <th style="background:#f39c12;">NO</th>
+                            <th style="background:#f39c12;">SATUAN KERJA</th>
                             <th style="background:#f39c12;">NAMA LENGKAP</th>
                             <th style="background:#f39c12;">USERNAME</th>
-                            <th style="background:#f39c12;">TGL LAHIR</th>
-                            <th style="background:#f39c12;">EMAIL</th>
-                            <th style="background:#f39c12;">JABATAN</th>
-                            <th style="background:#f39c12;">DEPARTEMEN/UNIT KERJA</th>
-                            <th style="background:#f39c12;">MASA KERJA</th>
-                            <th style="background:#f39c12;">STATUS</th>
+                            <th style="background:#f39c12;">TEMPAT & TGL LAHIR</th>
                             <th style="background:#f39c12;">PERINTAH</th>
                         </tr>
                     </thead>
@@ -31,14 +28,16 @@
                         @forelse ($employees as $index => $employee)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                <td>{{ $employee->name }}</td>
+                                <td>
+                                    <p> {{ $employee->workUnit?->name ?? '-' }} </p>
+                                    <p class="badge badge-primary">{{ $employee->type }}</p>
+                                </td>
+                                <td>
+                                    <p> {{ $employee->name }} </p>
+                                    <p>{{ $employee->nip }}</p>
+                                </td>
                                 <td>{{ $employee->username }}</td>
-                                <td>{{ $employee->dob ?? '-' }}</td>
-                                <td>{{ $employee->email ?? '-' }}</td>
-                                <td>{{ $employee->position?->name ?? '-' }}</td>
-                                <td>{{ $employee->workUnit?->name ?? '-' }}</td>
-                                <td>{{ $employee->working_period ?? '-' }}</td>
-                                <td>{{ $employee->is_active ? 'Aktif' : 'Tidak Aktif' }}</td>
+                                <td>{{ $employee->pob ?? '-' }}, {{ $employee->dob ?? '-' }}</td>
                                 <td>
                                     <a href="{{ route('admin.employee.edit', $employee->id) }}"
                                         class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
