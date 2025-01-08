@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -39,12 +38,37 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\WorkUnit|null $workUnit
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee active()
+ * @property string $type
+ * @property string|null $nip
+ * @property string|null $last_education
+ * @property string|null $pob
+ * @property string|null $kelas_jabatan
+ * @property string|null $sk_tmt_jabatan
+ * @property string|null $sk_tmt_golongan
+ * @property string|null $nomor_karpeg
+ * @property string|null $tmt_kenaikan_pangkat_selanjutnya
+ * @property int|null $rank_id
+ * @property int|null $placement_id
+ * @property int|null $fingerprint_id
+ * @property-read \App\Models\Fingerprint|null $fingerprint
+ * @property-read \App\Models\Placement|null $placement
+ * @property-read \App\Models\Rank|null $rank
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereFingerprintId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereKelasJabatan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereLastEducation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereNip($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereNomorKarpeg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee wherePlacementId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee wherePob($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereRankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereSkTmtGolongan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereSkTmtJabatan($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereTmtKenaikanPangkatSelanjutnya($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereType($value)
  * @mixin \Eloquent
  */
 class Employee extends Model
 {
-    use HasActiveScope;
-
     protected $fillable = [
         'id',
         'type',

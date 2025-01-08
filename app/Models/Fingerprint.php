@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $name
@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Fingerprint whereIp($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Fingerprint whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Fingerprint whereUpdatedAt($value)
+ * @property string $port
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Fingerprint wherePort($value)
  * @mixin \Eloquent
  */
 class Fingerprint extends Model

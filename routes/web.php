@@ -23,6 +23,7 @@ Route::prefix('admin')
             Route::get('/', 'ReportController@index')->name('index');
             Route::get('/absence', 'ReportController@absence')->name('absence');
         });
+        Route::resource('employee', 'EmployeeController')->except('show');
 
         Route::namespace('Master')
             ->group(function () {
@@ -33,6 +34,5 @@ Route::prefix('admin')
                 Route::resource('placement', 'PlacementController')->except('show');
                 Route::resource('information', 'InformationController')->except('show');
                 Route::resource('fingerprint', 'FingerprintController')->except('show');
-                Route::resource('employee', 'EmployeeController')->except('show');
             });
     });

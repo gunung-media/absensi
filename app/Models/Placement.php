@@ -6,7 +6,7 @@ use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newQuery()

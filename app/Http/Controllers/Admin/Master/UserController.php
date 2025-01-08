@@ -4,23 +4,25 @@ namespace App\Http\Controllers\Admin\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        return view('admin.user.index', [
+        return view('admin.master.user.index', [
             'users' => User::all()
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        return view('admin.user.form');
+        return view('admin.master.user.form');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -34,18 +36,18 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return redirect()->route('admin.user.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('admin.master.user.index')->with('success', 'User berhasil ditambahkan');
     }
 
 
-    public function edit(User $user)
+    public function edit(User $user): View
     {
-        return view('admin.user.form', [
+        return view('admin.master.user.form', [
             'user' => $user
         ]);
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -58,12 +60,12 @@ class UserController extends Controller
             'password' => $request->password ? bcrypt($request->password) : $user->password,
         ]);
 
-        return redirect()->route('admin.user.index')->with('success', 'User berhasil diubah');
+        return redirect()->route('admin.master.user.index')->with('success', 'User berhasil diubah');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $user->delete();
-        return redirect()->route('admin.user.index')->with('success', 'User berhasil dihapus');
+        return redirect()->route('admin.master.user.index')->with('success', 'User berhasil dihapus');
     }
 }

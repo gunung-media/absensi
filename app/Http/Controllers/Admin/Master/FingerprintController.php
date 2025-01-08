@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin\Master;
 use App\Http\Controllers\Controller;
 use App\Instances\FingerprintInstance;
 use App\Models\Fingerprint;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class FingerprintController extends Controller
 {
     public function __construct() {}
-    public function index()
+    public function index(): View
     {
         $fingerprints = Fingerprint::all();
         foreach ($fingerprints as $fingerprint) {
@@ -19,17 +21,17 @@ class FingerprintController extends Controller
                 $device->test();
             }
         }
-        return view('admin.fingerprint.index', [
+        return view('admin.master.fingerprint.index', [
             'fingerprints' => Fingerprint::all()
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        return view('admin.fingerprint.form');
+        return view('admin.master.fingerprint.form');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -43,19 +45,19 @@ class FingerprintController extends Controller
             'port' => $request->port
         ]);
 
-        return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil ditambahkan');
+        return redirect()->route('admin.master.fingerprint.index')->with('success', 'Fingerprint berhasil ditambahkan');
     }
 
 
-    public function edit(Fingerprint $fingerprint)
+    public function edit(Fingerprint $fingerprint): View
     {
-        return view('admin.fingerprint.form', [
+        return view('admin.master.fingerprint.form', [
             'fingerprint' => $fingerprint
 
         ]);
     }
 
-    public function update(Request $request, Fingerprint $fingerprint)
+    public function update(Request $request, Fingerprint $fingerprint): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -69,12 +71,12 @@ class FingerprintController extends Controller
             'port' => $request->port
         ]);
 
-        return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil diubah');
+        return redirect()->route('admin.master.fingerprint.index')->with('success', 'Fingerprint berhasil diubah');
     }
 
-    public function destroy(Fingerprint $fingerprint)
+    public function destroy(Fingerprint $fingerprint): RedirectResponse
     {
         $fingerprint->delete();
-        return redirect()->route('admin.fingerprint.index')->with('success', 'Fingerprint berhasil dihapus');
+        return redirect()->route('admin.master.fingerprint.index')->with('success', 'Fingerprint berhasil dihapus');
     }
 }

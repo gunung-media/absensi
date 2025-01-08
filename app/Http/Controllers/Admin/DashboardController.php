@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         return view('admin.dashboard', [
             'admin' => User::all()->count(),
-            'employee' => Employee::active()->get()->count(),
+            'employee' => Employee::get()->count(),
             'workUnit' => WorkUnit::active()->get()->count(),
             'fingerprint' => Fingerprint::all()->count()
         ]);

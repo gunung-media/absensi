@@ -4,23 +4,25 @@ namespace App\Http\Controllers\Admin\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\WorkUnit;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class WorkUnitController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        return view('admin.work-unit.index', [
+        return view('admin.master.work-unit.index', [
             'workUnits' => WorkUnit::all()
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        return view('admin.work-unit.form');
+        return view('admin.master.work-unit.form');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -32,18 +34,18 @@ class WorkUnitController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.work-unit.index')->with('success', 'Satuan Kerja berhasil ditambahkan');
+        return redirect()->route('admin.master.work-unit.index')->with('success', 'Satuan Kerja berhasil ditambahkan');
     }
 
 
-    public function edit(WorkUnit $workUnit)
+    public function edit(WorkUnit $workUnit): View
     {
-        return view('admin.work-unit.form', [
+        return view('admin.master.work-unit.form', [
             'workUnit' => $workUnit
         ]);
     }
 
-    public function update(Request $request, WorkUnit $workUnit)
+    public function update(Request $request, WorkUnit $workUnit): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -55,12 +57,12 @@ class WorkUnitController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.work-unit.index')->with('success', 'Satuan Kerja berhasil diubah');
+        return redirect()->route('admin.master.work-unit.index')->with('success', 'Satuan Kerja berhasil diubah');
     }
 
-    public function destroy(WorkUnit $workUnit)
+    public function destroy(WorkUnit $workUnit): RedirectResponse
     {
         $workUnit->delete();
-        return redirect()->route('admin.work-unit.index')->with('success', 'Satuan Kerja berhasil dihapus');
+        return redirect()->route('admin.master.work-unit.index')->with('success', 'Satuan Kerja berhasil dihapus');
     }
 }

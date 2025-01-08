@@ -4,23 +4,25 @@ namespace App\Http\Controllers\Admin\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Placement;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PlacementController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        return view('admin.placement.index', [
+        return view('admin.master.placement.index', [
             'placements' => Placement::all()
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        return view('admin.placement.form');
+        return view('admin.master.placement.form');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -32,19 +34,19 @@ class PlacementController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.placement.index')->with('success', 'Placement berhasil ditambahkan');
+        return redirect()->route('admin.master.placement.index')->with('success', 'Placement berhasil ditambahkan');
     }
 
 
-    public function edit(Placement $placement)
+    public function edit(Placement $placement): View
     {
-        return view('admin.placement.form', [
+        return view('admin.master.placement.form', [
             'placement' => $placement
 
         ]);
     }
 
-    public function update(Request $request, Placement $placement)
+    public function update(Request $request, Placement $placement): RedirectResponse
     {
         $request->validate([
             'name' => 'required',
@@ -56,12 +58,12 @@ class PlacementController extends Controller
             'is_active' => $request->is_active,
         ]);
 
-        return redirect()->route('admin.placement.index')->with('success', 'Placement berhasil diubah');
+        return redirect()->route('admin.master.placement.index')->with('success', 'Placement berhasil diubah');
     }
 
-    public function destroy(Placement $placement)
+    public function destroy(Placement $placement): RedirectResponse
     {
         $placement->delete();
-        return redirect()->route('admin.placement.index')->with('success', 'Placement berhasil dihapus');
+        return redirect()->route('admin.master.placement.index')->with('success', 'Placement berhasil dihapus');
     }
 }
