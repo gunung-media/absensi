@@ -16,7 +16,7 @@
                     <thead>
                         <tr>
                             <th style="background:#f39c12;">NO</th>
-                            <th style="background:#f39c12;">NAMA JABATAN</th>
+                            <th style="background:#f39c12;">NAMA PENEMPATAN</th>
                             <th style="background:#f39c12;">STATUS</th>
                             <th style="background:#f39c12;">PERINTAH</th>
                         </tr>
