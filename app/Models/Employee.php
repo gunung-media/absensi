@@ -88,8 +88,16 @@ class Employee extends Model
         'rank_id',
         'placement_id',
         'fingerprint_id',
+        'is_field_worker',
+        'work_shift_id',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'is_field_worker' => 'boolean',
+        ];
+    }
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
@@ -113,5 +121,10 @@ class Employee extends Model
     public function fingerprint(): BelongsTo
     {
         return $this->belongsTo(Fingerprint::class);
+    }
+
+    public function workShift(): BelongsTo
+    {
+        return $this->belongsTo(WorkShift::class);
     }
 }

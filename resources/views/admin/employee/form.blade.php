@@ -47,6 +47,21 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="form-group">
+                                <label for="inputEmail3" class="control-label">Shift Kerja</label>
+                                <select class="form-control" name="work_shift_id" required>
+                                    <option value="">Pilih Shift Kerja</option>
+                                    @forelse ($workShifts as $workShift)
+                                        <option value="{{ $workShift->id }}"
+                                            {{ isset($employee) && $employee->work_shift_id == $workShift->id ? 'selected' : '' }}>
+                                            {{ $workShift->name }}
+                                        </option>
+                                    @empty
+                                        <option disabled>Silahkan Tambah Shift Kerja Terlebih Dahulu</option>
+                                    @endforelse
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label class="control-label">Nama</label>
                                 <input type="text" id="name" name="name" class="form-control"
@@ -56,7 +71,8 @@
                             <div class="form-group" type="pns">
                                 <label class="control-label">NIP</label>
                                 <input type="text" id="nip" name="nip" class="form-control"
-                                    placeholder="Masukkan NIP" value="{{ isset($employee) ? $employee->nip : old('nip') }}">
+                                    placeholder="Masukkan NIP"
+                                    value="{{ isset($employee) ? $employee->nip : old('nip') }}">
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Username</label>
@@ -103,6 +119,11 @@
                                         <option disabled>Silahkan Mesin Fingerprint Terlebih Dahulu</option>
                                     @endforelse
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" id="is_field_worker" name="is_field_worker"
+                                    value="{{ isset($employee) ? $employee->is_field_worker : old('is_field_worker') }}">
+                                <label class="control-label" for="is_field_worker">Pekerja Lapangan?</label>
                             </div>
                         </div>
 

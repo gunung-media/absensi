@@ -31,6 +31,7 @@
                     <li><a href="{{ route('admin.fingerprint.index') }}">Data Mesin Fingerprint</a></li>
                     <li><a href="{{ route('admin.user.index') }}">Data Admin</a></li>
                     <li><a href="{{ route('admin.work-unit.index') }}">Data Unit Kerja</a></li>
+                    <li><a href="{{ route('admin.work-shift.index') }}">Data Shift Kerja</a></li>
                     <li><a href="{{ route('admin.rank.index') }}">Data Pangkat/Golongan</a></li>
                     <li><a href="{{ route('admin.placement.index') }}">Data Penggajian - Penempatan </a></li>
                     <li><a href="{{ route('admin.position.index') }}">Data Jabatan</a></li>

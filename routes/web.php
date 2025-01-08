@@ -29,6 +29,7 @@ Route::prefix('admin')
             ->group(function () {
                 Route::resource('user', 'UserController')->except('show');
                 Route::resource('work-unit', 'WorkUnitController')->except('show');
+                Route::resource('work-shift', 'WorkShiftController')->except('show');
                 Route::resource('position', 'PositionController')->except('show');
                 Route::resource('rank', 'RankController')->except('show');
                 Route::resource('placement', 'PlacementController')->except('show');

@@ -9,6 +9,7 @@ use App\Models\Fingerprint;
 use App\Models\Placement;
 use App\Models\Position;
 use App\Models\Rank;
+use App\Models\WorkShift;
 use App\Models\WorkUnit;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -68,6 +69,7 @@ class EmployeeController extends Controller
         return view('admin.employee.form', [
             'positions' => Position::active()->get(),
             'workUnits' => WorkUnit::active()->get(),
+            'workShifts' => WorkShift::get(),
             'ranks' => Rank::active()->get(),
             'placements' => Placement::active()->get(),
             'fingerprints' => Fingerprint::get(),
@@ -95,6 +97,8 @@ class EmployeeController extends Controller
             'placement_id' => 'nullable|exists:placements,id', // Valid placement ID, nullable
             'fingerprint_id' => 'required|exists:fingerprints,id', // Valid fingerprint ID, nullable
             'is_active' => 'nullable|boolean', // Boolean value for active status, nullable
+            'work_shift_id' => 'required|exists:work_shifts,id',
+            'is_field_worker' => 'nullable|boolean'
         ]);
 
         DB::beginTransaction();
@@ -125,6 +129,7 @@ class EmployeeController extends Controller
             'employee' => $employee,
             'positions' => Position::active()->get(),
             'workUnits' => WorkUnit::active()->get(),
+            'workShifts' => WorkShift::get(),
             'ranks' => Rank::active()->get(),
             'placements' => Placement::active()->get(),
             'fingerprints' => Fingerprint::get(),
@@ -152,6 +157,8 @@ class EmployeeController extends Controller
             'placement_id' => 'nullable|exists:placements,id', // Valid placement ID, nullable
             'fingerprint_id' => 'required|exists:fingerprints,id', // Valid fingerprint ID, nullable
             'is_active' => 'nullable|boolean', // Boolean value for active status, nullable
+            'work_shift_id' => 'required|exists:work_shifts,id',
+            'is_field_worker' => 'nullable|boolean'
         ]);
 
         DB::beginTransaction();

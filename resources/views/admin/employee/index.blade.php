@@ -18,6 +18,7 @@
                         <tr>
                             <th style="background:#f39c12;">NO</th>
                             <th style="background:#f39c12;">SATUAN KERJA</th>
+                            <th style="background:#f39c12;">SHIFT KERJA</th>
                             <th style="background:#f39c12;">NAMA LENGKAP</th>
                             <th style="background:#f39c12;">USERNAME</th>
                             <th style="background:#f39c12;">TEMPAT & TGL LAHIR</th>
@@ -32,6 +33,7 @@
                                     <p> {{ $employee->workUnit?->name ?? '-' }} </p>
                                     <p class="badge badge-primary">{{ $employee->type }}</p>
                                 </td>
+                                <td>{{ $employee->workShift?->name ?? '-' }}</td>
                                 <td>
                                     <p> {{ $employee->name }} </p>
                                     <p>{{ $employee->nip }}</p>

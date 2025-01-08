@@ -27,9 +27,11 @@ return new class extends Migration
             $table->string('nomor_karpeg')->nullable();
             $table->string('tmt_kenaikan_pangkat_selanjutnya')->nullable();
 
+            $table->boolean('is_field_worker')->default(false);
 
             $table->unsignedBigInteger('position_id')->nullable();
             $table->unsignedBigInteger('work_unit_id')->nullable();
+            $table->unsignedBigInteger('work_shift_id')->nullable();
             $table->unsignedBigInteger('rank_id')->nullable();
             $table->unsignedBigInteger('placement_id')->nullable();
             $table->unsignedBigInteger('fingerprint_id')->nullable();
@@ -38,6 +40,7 @@ return new class extends Migration
 
             $table->foreign('position_id')->references('id')->on('positions')->nullOnDelete();
             $table->foreign('work_unit_id')->references('id')->on('work_units')->nullOnDelete();
+            $table->foreign('work_shift_id')->references('id')->on('work_shifts')->nullOnDelete();
             $table->foreign('rank_id')->references('id')->on('ranks')->nullOnDelete();
             $table->foreign('placement_id')->references('id')->on('placements')->nullOnDelete();
             $table->foreign('fingerprint_id')->references('id')->on('fingerprints')->nullOnDelete();
