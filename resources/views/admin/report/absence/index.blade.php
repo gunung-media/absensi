@@ -35,6 +35,9 @@
                     $countDay = \Carbon\Carbon::create($year, $month, 1)->daysInMonth;
                 @endphp
                 <div class="table-container">
+                    <a class="btn btn-primary"
+                        href="{{ route('admin.report.absence', ['y' => $year, 'm' => $month, 'print' => true]) }}"
+                        target="_blank"><i class="fa fa-print"></i> Cetak</a>
                     <hr />
                     <center>
                         <h4>Daftar Absensi</h4>
