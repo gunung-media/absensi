@@ -101,7 +101,7 @@ class FingerprintInstance
             case 15:
                 return "Wajah";
             default:
-                return "State belum diatur, Silahkan hubungi Developer";
+                return "Jari";
         }
     }
 

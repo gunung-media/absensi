@@ -6,7 +6,7 @@ use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $name
@@ -22,6 +22,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkUnit active()
+ * @property string $start
+ * @property string $end
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkShift whereEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|WorkShift whereStart($value)
  * @mixin \Eloquent
  */
 class WorkShift extends Model

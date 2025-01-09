@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Instances\FingerprintInstance;
-use App\Models\Fingerprint;
+use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -20,16 +19,10 @@ class ReportController extends Controller
     {
         $params = $request->only('m', 'y');
         $isPrinting = $request->boolean('print', false);
-        $fingerprints = Fingerprint::all();
         $data = collect([]);
 
         if ($params) {
-            foreach ($fingerprints as $fingerprint) {
-                $device = new FingerprintInstance($fingerprint);
-                if (!$device->check()) continue;
-                $deviceData = $device->getAttendanceGroupBy($params);
-                $data->push(...$deviceData);
-            }
+            $data = Employee::with(['absences' => fn($query) => $query->whereMonth('timestamp', $params['m'])->whereYear('timestamp', $params['y'])])->get();
         }
 
         if ($isPrinting) {

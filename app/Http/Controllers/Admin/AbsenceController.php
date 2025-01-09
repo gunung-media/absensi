@@ -7,25 +7,27 @@ use App\Instances\FingerprintInstance;
 use App\Models\Absence;
 use App\Models\Employee;
 use App\Models\Fingerprint;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AbsenceController extends Controller
 {
     public function __construct() {}
 
-    public function index()
+    public function index(): View
     {
-        $absences = Absence::all();
+        $absences = Absence::orderBy('timestamp', 'desc')->get();
         return view('admin.absence.index', compact('absences'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('admin.absence.form', [
-            'employees' => Employee::whereIsFieldWorker(true)->get()
+            'employees' => Employee::all()
         ]);
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         $validated = request()->validate([
             'timestamp' => 'required',
@@ -35,19 +37,42 @@ class AbsenceController extends Controller
             'type' => 'nullable',
         ]);
 
-        Absence::create($validated);
+        Absence::create([...$validated, 'state' => 'Di-input admin']);
 
         return redirect()->route('admin.absence.index')->with('success', 'Absensi berhasil ditambahkan');
     }
 
-    public function destroy($id)
+    public function edit(mixed $id): View
+    {
+        return view('admin.absence.form', [
+            'employees' => Employee::all(),
+            'absence' => Absence::find($id)
+        ]);
+    }
+
+    public function update(mixed $id): RedirectResponse
+    {
+        $validated = request()->validate([
+            'timestamp' => 'required',
+            'employee_id' => 'required',
+            'fingerprint_id' => 'nullable',
+            'state' => 'nullable',
+            'type' => 'nullable',
+        ]);
+
+        $absence = Absence::find($id);
+        $absence->update([...$validated, 'state' => 'Di-input admin']);
+
+        return redirect()->route('admin.absence.index')->with('success', 'Absensi berhasil diubah');
+    }
+    public function destroy(mixed $id): RedirectResponse
     {
         $absence = Absence::find($id);
         $absence->delete();
         return redirect()->route('admin.absence.index')->with('success', 'Absensi berhasil dihapus');
     }
 
-    public function sync()
+    public function sync(): RedirectResponse
     {
         $fingerprints = Fingerprint::all();
         $attendances = collect([]);

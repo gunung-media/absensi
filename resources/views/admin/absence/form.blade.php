@@ -3,8 +3,8 @@
 @section('content')
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <i class="fa fa-pencil"></i> Form Input Absensi Pegawai Lapangan
-            <a href="{{ route('admin.work-shift.index') }}"><button type="button" class="btn btn-sm"
+            <i class="fa fa-pencil"></i> Form Input Absensi Pegawai
+            <a href="{{ route('admin.absence.index') }}"><button type="button" class="btn btn-sm"
                     style="float:right;background-color:#ffffff;color:#000;line-height:0.8">
                     <i class="fa fa-chevron-circle-left"></i> Kembali
                 </button></a>
@@ -23,17 +23,17 @@
                         <div class="col-md-12">
 
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Pegawai Lapangan</label>
+                                <label for="inputEmail3" class="col-sm-2 control-label">Pegawai</label>
                                 <div class="col-sm-4">
                                     <select class="form-control" name="employee_id" required>
-                                        <option value="">Pilih Pegawai Lapangan</option>
+                                        <option value="">Pilih Pegawai</option>
                                         @forelse ($employees as $employee)
                                             <option value="{{ $employee->id }}"
                                                 {{ isset($absence) && $employee->employee_id == $employee->id ? 'selected' : '' }}>
                                                 {{ $employee->name }}
                                             </option>
                                         @empty
-                                            <option disabled>Silahkan Tambah Pegawai Lapangan Terlebih Dahulu</option>
+                                            <option disabled>Silahkan Tambah Pegawai Terlebih Dahulu</option>
                                         @endforelse
                                     </select>
                                 </div>

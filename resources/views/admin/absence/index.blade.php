@@ -22,7 +22,7 @@
                             <th style="background:#f39c12;">JAM</th>
                             <th style="background:#f39c12;">MODE VERIFIKASI</th>
                             <th style="background:#f39c12;">STATUS ABSENSI</th>
-                            <th style="background:#f39c12;">MESIN FINGERPRINT</th>
+                            <th style="background:#f39c12;">SUMBER</th>
                             <th style="background:#f39c12;">NAMA LENGKAP</th>
                             <th style="background:#f39c12;">SATUAN KERJA </th>
                             <th style="background:#f39c12;">SHIFT KERJA</th>
@@ -34,22 +34,11 @@
                                 $time = \Carbon\Carbon::parse($absence->timestamp)->format('H:i:s');
                             @endphp
                             <tr>
-                                <td>{{ \Carbon\Carbon::parse($absence->timestamp)->format('d,F Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($absence->timestamp)->format('d, F Y') }}</td>
                                 <td>{{ $time }}</td>
                                 <td>{{ $absence->state }}</td>
-                                <td>
-                                    <p> {{ $absence->type }} </p>
-                                    @php
-                                        $late = \Carbon\Carbon::createFromFormat('H:i:s', $time)->gt(
-                                            \Carbon\Carbon::createFromFormat(
-                                                'H:i:s',
-                                                $absence->employee->workShift?->start ?? '08:00:00',
-                                            ),
-                                        );
-                                    @endphp
-                                    <p>{{ $late ? 'Telat' : '' }}</p>
-                                </td>
-                                <td>{{ $absence->fingerprint->name }}</td>
+                                <td>{{ $absence->type }} </td>
+                                <td>{{ $absence->fingerprint?->name ?? $absence->state }}</td>
                                 <td>{{ $absence->employee->name ?? 'User Sudah Dihapus' }}</td>
                                 <td>{{ $absence->employee->workUnit?->name ?? '-' }}</td>
                                 <td>{{ $absence->employee->workShift?->name ?? '' }}
