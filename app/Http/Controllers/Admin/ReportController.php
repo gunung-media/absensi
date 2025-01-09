@@ -19,28 +19,23 @@ class ReportController extends Controller
     {
         $params = $request->only('m', 'y');
         $isPrinting = $request->boolean('print', false);
-        $data = collect([]);
 
-        if ($params) {
-            $data = Employee::with(['absences' => fn($query) => $query->whereMonth('timestamp', $params['m'])->whereYear('timestamp', $params['y'])])->get();
-        }
+        $month = $params['m'] ?? now()->month;
+        $year = $params['y'] ?? now()->year;
+
+        $data = Employee::with([
+            'absences' => fn($query) =>
+            $query->whereMonth('timestamp', $month)
+                ->whereYear('timestamp', $year)
+        ])->get();
 
         if ($isPrinting) {
-            $pdf = PDF::loadView('admin.report.absence.print', [
-                'data' => $data,
-                'month' => $params['m'] ?? now()->month,
-                'year' => $params['y'] ?? now()->year
-            ]);
+            $pdf = PDF::loadView('admin.report.absence.print', compact('data', 'month', 'year'))
+                ->setPaper('A4', 'landscape');
 
-            $pdf->setPaper('A4', 'landscape');
-
-            return $pdf->download('absence_report_' . ($params['m'] ?? now()->month) . '_' . ($params['y'] ?? now()->year) . '.pdf');
+            return $pdf->download("absence_report_{$month}_{$year}.pdf");
         }
 
-        return view('admin.report.absence.index', [
-            'data' => $data,
-            'month' => $params['m'] ?? now()->month,
-            'year' => $params['y'] ?? now()->year
-        ]);
+        return view('admin.report.absence.index', compact('data', 'month', 'year'));
     }
 }

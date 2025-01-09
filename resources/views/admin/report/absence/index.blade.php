@@ -10,34 +10,35 @@
                 <div class="row">
                     <div class="col-md-2">
                         <select name="m" class="form-control">
-                            <option value="" disabled>-- Pilih Bulan -- </option>
+                            <option value="" disabled>-- Pilih Bulan --</option>
                             @foreach (['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as $key => $m)
-                                <option value="{{ $key + 1 }}"
-                                    {{ $m == old('m', now()->format('m')) ? 'selected' : '' }}>
+                                <option value="{{ $key + 1 }}" {{ $key + 1 == old('m', $month) ? 'selected' : '' }}>
                                     {{ $m }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" value="{{ old('y', now()->year) }}" class="form-control" min="1900"
-                            max="2099" name="y">
+                        <input type="number" name="y" value="{{ old('y', $year) }}" class="form-control"
+                            min="1900" max="2099">
                     </div>
                     <div class="col-md-6">
-                        <button class="btn btn-success" type="submit" id="btn-search"><i class="fa fa-refresh"></i>
-                            LIHAT</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-refresh"></i> LIHAT
+                        </button>
                     </div>
                 </div>
             </form>
 
             @if ($data->isNotEmpty())
-                @php
-                    $countDay = \Carbon\Carbon::create($year, $month, 1)->daysInMonth;
-                @endphp
+                @php $countDay = \Carbon\Carbon::create($year, $month, 1)->daysInMonth; @endphp
+
                 <div class="table-container">
                     <a class="btn btn-primary"
                         href="{{ route('admin.report.absence', ['y' => $year, 'm' => $month, 'print' => true]) }}"
-                        target="_blank"><i class="fa fa-print"></i> Cetak</a>
+                        target="_blank">
+                        <i class="fa fa-print"></i> Cetak
+                    </a>
                     <hr />
                     <center>
                         <h4>Daftar Absensi</h4>
@@ -45,25 +46,27 @@
                         <h4><small>Menteng, Jekan Raya, Palangka Raya City, Central Kalimantan</small></h4>
                     </center>
                     <hr />
-                    <div style="display: flex; justify-content: center;  gap: 1rem">
-                        <p><strong>Bulan:</strong> {{ Carbon\Carbon::create($year, $month, 1)->format('F Y') }}</p>
+
+                    <div style="display: flex; justify-content: center; gap: 1rem">
+                        <p><strong>Bulan:</strong> {{ \Carbon\Carbon::create($year, $month, 1)->format('F Y') }}</p>
                         <p><strong>Total:</strong> {{ $data->count() }}</p>
                     </div>
+
                     <table class="table table-bordered table-sm">
                         <thead>
                             <tr>
                                 <th rowspan="3">No</th>
                                 <th rowspan="3">Nama</th>
-                                <th colspan="{{ $countDay }}" style="text-align: center">Tanggal</th>
-                                <th colspan="3" style="text-align: center">Total</th>
+                                <th colspan="{{ $countDay }}" style="text-align: center;">Tanggal</th>
+                                <th colspan="3" style="text-align: center;">Total</th>
                             </tr>
                             <tr>
                                 @foreach (range(1, $countDay) as $i)
-                                    @php
-                                        $day = \Carbon\Carbon::create($year, $month, $i);
-                                    @endphp
-                                    <th class="date-header" style="background-color:{{ $day->isWeekend() ? 'red' : '' }}">
-                                        {{ $day->format('D') }}</th>
+                                    @php $day = \Carbon\Carbon::create($year, $month, $i); @endphp
+                                    <th class="date-header"
+                                        style="background-color:{{ $day->isWeekend() ? '#F57328' : '' }}">
+                                        {{ $day->format('D') }}
+                                    </th>
                                 @endforeach
                                 <th rowspan="2">Total Hadir</th>
                                 <th rowspan="2">Total Telat</th>
@@ -71,11 +74,11 @@
                             </tr>
                             <tr>
                                 @foreach (range(1, $countDay) as $i)
-                                    @php
-                                        $day = \Carbon\Carbon::create($year, $month, $i);
-                                    @endphp
-                                    <th class="date-header" style="background-color:{{ $day->isWeekend() ? 'red' : '' }}">
-                                        {{ $i }}</th>
+                                    @php $day = \Carbon\Carbon::create($year, $month, $i); @endphp
+                                    <th class="date-header"
+                                        style="background-color:{{ $day->isWeekend() ? '#F57328' : '' }}">
+                                        {{ $i }}
+                                    </th>
                                 @endforeach
                             </tr>
                         </thead>
@@ -88,39 +91,42 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item['employee']['name'] ?? 'User Sudah Dihapus' }}</td>
+                                    <td>{{ $item->name ?? 'User Sudah Dihapus' }}</td>
                                     @foreach (range(1, $countDay) as $i)
                                         @php
-                                            $attendance = $item['attendances'][$i] ?? null;
+                                            $day = \Carbon\Carbon::create($year, $month, $i);
+                                            $attendance = $item->absences ?? null;
                                         @endphp
-                                        @if ($attendance && $attendance > 0)
+                                        @if (
+                                            $attendance &&
+                                                $attendance->some(fn($att) => \Carbon\Carbon::parse($att->timestamp)->format('Y-m-d') === $day->format('Y-m-d')))
                                             @php
-                                                $late = collect($attendance)->some(
-                                                    fn($att) => Carbon\Carbon::createFromFormat(
-                                                        'H:i:s',
-                                                        $att['time'],
-                                                    )->gt(
-                                                        Carbon\Carbon::createFromFormat(
-                                                            'H:i:s',
-                                                            $item['employee']->workShift?->start ?? '08:00:00',
-                                                        ),
-                                                    ),
-                                                );
-                                                if ($late) {
-                                                    $totalTelat++;
-                                                } else {
-                                                    $totalCheckIn++;
-                                                }
+                                                $attendance = $attendance
+                                                    ->filter(
+                                                        fn($att) => \Carbon\Carbon::parse($att->timestamp)->format(
+                                                            'Y-m-d',
+                                                        ) === $day->format('Y-m-d'),
+                                                    )
+                                                    ->sortBy('timestamp')
+                                                    ->first();
+
+                                                $late =
+                                                    \Carbon\Carbon::parse($attendance->timestamp)->format('H:i:s') >
+                                                    ($item->workShift?->start ?? '08:00:00');
+
+                                                $late ? $totalTelat++ : $totalCheckIn++;
                                             @endphp
                                             <td
-                                                style="background-color: {{ $late ? 'yellow' : 'green' }}; color: {{ $late ? 'black' : 'white' }}">
+                                                style="background-color: {{ $late ? '#FFE9A0' : '#367E18' }}; color: {{ $late ? 'black' : 'white' }}">
                                                 {{ $late ? 'T' : 'H' }}
                                             </td>
-                                        @elseif (Carbon\Carbon::parse("$year-$month-$i")->isFuture())
+                                        @elseif ($day->isFuture())
                                             <td></td>
                                         @else
                                             @php $totalTidakHadir++; @endphp
-                                            <td style="background-color: red; color: white"></td>
+                                            <td
+                                                style="background-color: {{ $day->isWeekend() ? '#F57328' : '#CC3636' }}; color: white">
+                                            </td>
                                         @endif
                                     @endforeach
                                     <td>{{ $totalCheckIn }}</td>
