@@ -17,5 +17,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'username' => 'root',
         ]);
+
+        $this->call([
+            ShiftSeeder::class,
+            WorkUnitSeeder::class,
+            PositionSeeder::class
+        ]);
     }
 }

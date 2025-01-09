@@ -177,16 +177,12 @@
                                         ) {
                                             $lastAbsence = $dailyAbsences->sortByDesc('timestamp')->first();
 
-                                            $checkoutTime = $lastAbsence->checkout
-                                                ? \Carbon\Carbon::parse($lastAbsence->timestamp)
-                                                : null;
+                                            $timestamp = \Carbon\Carbon::parse($lastAbsence->timestamp);
 
-                                            if ($checkoutTime) {
-                                                $adjustedCheckoutTime = $checkoutTime->copy()->setDateFrom($end);
+                                            $adjustedCheckoutTime = $timestamp->copy()->setDateFrom($end);
 
-                                                if ($adjustedCheckoutTime->toTimeString() < $end->toTimeString()) {
-                                                    return $end->diffInMinutes($adjustedCheckoutTime);
-                                                }
+                                            if ($adjustedCheckoutTime->toTimeString() < $end->toTimeString()) {
+                                                return $end->diffInMinutes($adjustedCheckoutTime);
                                             }
 
                                             return 0;
