@@ -29,7 +29,7 @@
                                         <option value="">Pilih Pegawai</option>
                                         @forelse ($employees as $employee)
                                             <option value="{{ $employee->id }}"
-                                                {{ isset($absence) && $employee->employee_id == $employee->id ? 'selected' : '' }}>
+                                                {{ isset($absence) && $absence->employee_id == $employee->id ? 'selected' : '' }}>
                                                 {{ $employee->name }}
                                             </option>
                                         @empty

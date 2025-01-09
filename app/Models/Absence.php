@@ -53,7 +53,7 @@ class Absence extends Model
     protected function type(): Attribute
     {
         return Attribute::make(
-            get: function ($value) {
+            get: function () {
                 $shift = optional($this->employee->workShift);
                 $start = Carbon::createFromFormat("H:i:s", $shift->start ?? "08:00:00");
                 $end = Carbon::createFromFormat("H:i:s", $shift->end ?? "17:00:00");

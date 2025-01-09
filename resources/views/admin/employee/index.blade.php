@@ -33,7 +33,11 @@
                                     <p> {{ $employee->workUnit?->name ?? '-' }} </p>
                                     <p class="badge badge-primary">{{ $employee->type }}</p>
                                 </td>
-                                <td>{{ $employee->workShift?->name ?? '-' }}</td>
+                                <td>
+                                    <p>{{ $employee->workShift?->name ?? '-' }}</p>
+                                    <p>{{ $employee->workShift?->start ?? '-' }} -
+                                        {{ $employee->workShift?->end ?? '-' }}</p>
+                                </td>
                                 <td>
                                     <p> {{ $employee->name }} </p>
                                     <p>{{ $employee->nip }}</p>

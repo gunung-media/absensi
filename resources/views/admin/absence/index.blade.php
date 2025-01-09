@@ -5,8 +5,11 @@
         <a href="{{ route('admin.absence.create') }}">
             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"></i> Tambah</button>
         </a>
-        <a href="{{ route('admin.absence.sync') }}">
-            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-sync"></i> Sinkron Data</button>
+        <a href="{{ route('admin.absence.sync') }}" data-toggle="tooltip"
+            title="Mengambil data dari semua perangkat fingerprint dan menyimpannya ke sistem ini">
+            <button type="button" class="btn btn-default btn-sm">
+                <i class="fa fa-refresh"></i> Sinkron Data
+            </button>
         </a>
     </div>
     <div class="panel panel-primary">
@@ -26,6 +29,7 @@
                             <th style="background:#f39c12;">NAMA LENGKAP</th>
                             <th style="background:#f39c12;">SATUAN KERJA </th>
                             <th style="background:#f39c12;">SHIFT KERJA</th>
+                            <th style="background:#f39c12;">PENGATURAN</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +47,19 @@
                                 <td>{{ $absence->employee->workUnit?->name ?? '-' }}</td>
                                 <td>{{ $absence->employee->workShift?->name ?? '' }}
                                     {{ ($absence->employee->workShift?->start ?? '08:00:00') . '-' . ($absence->employee->workShift?->end ?? '17:00:00') }}
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('admin.absence.edit', $absence->id) }}"
+                                        class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                    <form action="{{ route('admin.absence.destroy', $absence->id) }}" method="POST"
+                                        class="d-inline delete-form" data-absence="{{ $absence->absencename }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-xs delete-btn">
+                                            <i class="fa fa-trash"></i> Hapus
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
