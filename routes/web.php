@@ -25,6 +25,7 @@ Route::prefix('admin')
         Route::prefix('report')->name('report.')->group(function () {
             Route::get('/', 'ReportController@index')->name('index');
             Route::get('/absence', 'ReportController@absence')->name('absence');
+            Route::get('/performance', 'ReportController@performance')->name('performance');
         });
         Route::resource('employee', 'EmployeeController')->except('show');
 

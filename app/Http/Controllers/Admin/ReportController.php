@@ -38,4 +38,28 @@ class ReportController extends Controller
 
         return view('admin.report.absence.index', compact('data', 'month', 'year'));
     }
+
+    public function performance(Request $request)
+    {
+        $params = $request->only('m', 'y');
+        $isPrinting = $request->boolean('print', false);
+
+        $month = $params['m'] ?? now()->month;
+        $year = $params['y'] ?? now()->year;
+
+        $data = Employee::with([
+            'absences' => fn($query) =>
+            $query->whereMonth('timestamp', $month)
+                ->whereYear('timestamp', $year)
+        ])->get();
+
+        if ($isPrinting) {
+            $pdf = PDF::loadView('admin.report.performance.print', compact('data', 'month', 'year'))
+                ->setPaper('A4', 'landscape');
+
+            return $pdf->download("performance_report_{$month}_{$year}.pdf");
+        }
+
+        return view('admin.report.performance.index', compact('data', 'month', 'year'));
+    }
 }

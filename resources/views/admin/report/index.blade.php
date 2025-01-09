@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="col-md-2 col-sm-2 col-xs-12">
-                    <a href="{{ route('admin.report.absence') }}" style="color:#000">
+                    <a href="{{ route('admin.report.performance') }}" style="color:#000">
                         <div class="info-box" style="border:1px solid #ddd">
                             <div style="margin-top:15px">
                                 <center>
