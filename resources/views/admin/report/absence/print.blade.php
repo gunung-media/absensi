@@ -158,9 +158,22 @@
                             @elseif ($day->isFuture())
                                 <td></td>
                             @else
-                                @php $totalTidakHadir++; @endphp
+                                @php
+                                    $totalTidakHadir++;
+                                    $label = '';
+                                    if (
+                                        $item->absents
+                                            ->filter(fn($absent) => $absent->date === $day->format('Y-m-d'))
+                                            ->isNotEmpty()
+                                    ) {
+                                        $label = $item->absents->first(
+                                            fn($absent) => $absent->date === $day->format('Y-m-d'),
+                                        )->type;
+                                    }
+                                @endphp
                                 <td
                                     style="background-color: {{ $day->isWeekend() ? '#F57328' : '#CC3636' }}; color: white">
+                                    {{ strtoupper($label) }}
                                 </td>
                             @endif
                         @endforeach
