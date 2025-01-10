@@ -58,7 +58,7 @@ class ReportController extends Controller
 
         if ($isPrinting) {
             $pdf = PDF::loadView('admin.report.performance.print', compact('data', 'month', 'year'))
-                ->setPaper('A4', 'landscape');
+                ->setPaper('A4', 'portrait');
 
             return $pdf->download("performance_report_{$month}_{$year}.pdf");
         }

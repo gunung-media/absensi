@@ -3,7 +3,7 @@
 @section('content')
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <i class="fa fa-th"></i> List Data Absensi
+            <i class="fa fa-th"></i> Rekap Performa
         </div>
         <div class="panel-body" id="panel-body">
             <form method="GET" action="{{ route('admin.report.performance') }}">
@@ -33,7 +33,7 @@
             @if ($data->isNotEmpty())
                 <div class="table-container">
                     <a class="btn btn-primary"
-                        href="{{ route('admin.report.absence', ['y' => $year, 'm' => $month, 'print' => true]) }}"
+                        href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'print' => true]) }}"
                         target="_blank">
                         <i class="fa fa-print"></i> Cetak
                     </a>
