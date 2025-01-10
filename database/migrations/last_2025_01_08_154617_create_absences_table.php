@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('timestamp');
             $table->string('lat')->nullable();
             $table->string('long')->nullable();
+            $table->boolean('accept')->default(1);
             $table->timestamps();
 
             $table->foreign('fingerprint_id')->references('id')->on('fingerprints')->nullOnDelete();

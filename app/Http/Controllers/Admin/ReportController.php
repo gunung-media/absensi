@@ -26,14 +26,15 @@ class ReportController extends Controller
         $data = Employee::with([
             'absences' => fn($query) =>
             $query->whereMonth('timestamp', $month)
-                ->whereYear('timestamp', $year),
+                ->whereYear('timestamp', $year)
+                ->whereAccept(true),
             'absents' => fn($query) =>
             $query->whereMonth('date', $month)
                 ->whereYear('date', $year),
         ])->get();
 
         if ($isPrinting) {
-            $pdf = PDF::loadView('admin.report.absence.print', compact('data', 'month', 'year'))
+            $pdf = Pdf::loadView('admin.report.absence.print', compact('data', 'month', 'year'))
                 ->setPaper('A4', 'landscape');
 
             return $pdf->download("absence_report_{$month}_{$year}.pdf");
@@ -53,14 +54,15 @@ class ReportController extends Controller
         $data = Employee::with([
             'absences' => fn($query) =>
             $query->whereMonth('timestamp', $month)
-                ->whereYear('timestamp', $year),
+                ->whereYear('timestamp', $year)
+                ->whereAccept(true),
             'absents' => fn($query) =>
             $query->whereMonth('date', $month)
                 ->whereYear('date', $year),
         ])->get();
 
         if ($isPrinting) {
-            $pdf = PDF::loadView('admin.report.performance.print', compact('data', 'month', 'year'))
+            $pdf = Pdf::loadView('admin.report.performance.print', compact('data', 'month', 'year'))
                 ->setPaper('A4', 'portrait');
 
             return $pdf->download("performance_report_{$month}_{$year}.pdf");

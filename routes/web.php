@@ -2,7 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/login');
+
+Route::name('absence.')->group(function () {
+    Route::get('/', 'AbsenceController@newAbsenceFromEmployee')->name('index');
+    Route::post('/', 'AbsenceController@storeAbsenceFromEmployee')->name('store');
+});
 
 Route::prefix('login')
     ->name('login')
@@ -11,6 +15,7 @@ Route::prefix('login')
         Route::get('', 'Auth\LoginController@showLoginForm');
         Route::post('', 'Auth\LoginController@login')->name('.post');
     });
+
 
 Route::prefix('admin')
     ->name('admin.')

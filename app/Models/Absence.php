@@ -31,6 +31,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Absence whereTimestamp($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Absence whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Absence whereUpdatedAt($value)
+ * @property string|null $lat
+ * @property string|null $long
+ * @property int $accept
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Absence whereAccept($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Absence whereLat($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Absence whereLong($value)
  * @mixin \Eloquent
  */
 class Absence extends Model
@@ -41,6 +47,9 @@ class Absence extends Model
         'state',
         'type',
         'timestamp',
+        'lat',
+        'long',
+        'accept'
     ];
 
     protected function state(): Attribute

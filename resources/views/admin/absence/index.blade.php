@@ -40,9 +40,25 @@
                             <tr>
                                 <td>{{ \Carbon\Carbon::parse($absence->timestamp)->format('d, F Y') }}</td>
                                 <td>{{ $time }}</td>
-                                <td>{{ $absence->state }}</td>
+                                <td>
+                                    <p>{{ $absence->state }}</p>
+
+                                    <p class="badge"
+                                        style="background-color:{{ $absence->accept ? '#00a65a' : '#f39c12' }}">
+                                        {{ $absence->accept ? 'Terverifikasi' : 'Butuh diverifikasi' }}</p>
+                                </td>
                                 <td>{{ $absence->type }} </td>
-                                <td>{{ $absence->fingerprint?->name ?? $absence->state }}</td>
+                                <td>
+                                    <p>
+                                        {{ $absence->fingerprint?->name ?? $absence->state }}
+                                    </p>
+
+                                    @if ($absence->lat && $absence->long)
+                                        <a href="{{ "https://www.google.com/maps/search/?api=1&query=$absence->lat,$absence->long" }}"
+                                            target="_blank">Lihat
+                                            Lokasi Absensi</a>
+                                    @endif
+                                </td>
                                 <td>{{ $absence->employee->name ?? 'User Sudah Dihapus' }}</td>
                                 <td>{{ $absence->employee->workUnit?->name ?? '-' }}</td>
                                 <td>{{ $absence->employee->workShift?->name ?? '' }}

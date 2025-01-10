@@ -198,17 +198,17 @@
 
                                         $absenceCount = [
                                             'firstAbsence' =>
-                                                $month == $currentMonth && $year == $currentYear
+                                                ($month == $currentMonth && $year == $currentYear
                                                     ? getWeekdaysUpToToday($year, $month, $currentDay)
-                                                    : getWeekdayCount($year, $month), // For other months, count all weekdays
+                                                    : getWeekdayCount($year, $month)) - $item->absents->count(),
                                             'midAbsence' =>
-                                                $month == $currentMonth && $year == $currentYear
+                                                ($month == $currentMonth && $year == $currentYear
                                                     ? getWeekdaysUpToToday($year, $month, $currentDay)
-                                                    : getWeekdayCount($year, $month),
+                                                    : getWeekdayCount($year, $month)) - $item->absents->count(),
                                             'lateAbsence' =>
-                                                $month == $currentMonth && $year == $currentYear
+                                                ($month == $currentMonth && $year == $currentYear
                                                     ? getWeekdaysUpToToday($year, $month, $currentDay)
-                                                    : getWeekdayCount($year, $month),
+                                                    : getWeekdayCount($year, $month)) - $item->absents->count(),
                                         ];
 
                                         foreach ($groupedAbsences as $date => $absencesForDate) {
@@ -227,6 +227,7 @@
 
                                                 $gap = $startTimeOnly->diffInHours($absenceTimeOnly, false);
                                                 $isMid = false;
+                                                $shouldAnd = false;
 
                                                 if ($absence['id'] == $absencesForDate[0]['id']) {
                                                     if ($gap <= 4) {
@@ -235,16 +236,20 @@
                                                     }
 
                                                     $isMid = true;
+                                                    $shouldAnd = count($absencesForDate) >= 3;
                                                 }
-
                                                 if (
-                                                    $isMid ||
-                                                    (count($absencesForDate) >= 3 &&
-                                                        $absence['id'] !=
-                                                            $absencesForDate[count($absencesForDate) - 1]['id'])
+                                                    ($shouldAnd && $isMid) || // If $shouldAnd is true, it must also satisfy $isMid
+                                                    (!$shouldAnd && $isMid) // If $shouldAnd is false, only $isMid matters
                                                 ) {
-                                                    $absenceCount['midAbsence']--;
-                                                    continue;
+                                                    if (
+                                                        count($absencesForDate) >= 3 &&
+                                                        $absence['id'] !=
+                                                            $absencesForDate[count($absencesForDate) - 1]['id']
+                                                    ) {
+                                                        $absenceCount['midAbsence']--;
+                                                        continue;
+                                                    }
                                                 }
 
                                                 if (

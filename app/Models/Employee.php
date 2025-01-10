@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- *
+ * 
  *
  * @property int $id
  * @property string $name
@@ -73,6 +73,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \App\Models\WorkShift|null $workShift
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereIsFieldWorker($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Employee whereWorkShiftId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Absent> $absents
+ * @property-read int|null $absents_count
  * @mixin \Eloquent
  */
 class Employee extends Model

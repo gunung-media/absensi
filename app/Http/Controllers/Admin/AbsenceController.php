@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Fingerprint;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AbsenceController extends Controller
 {
@@ -50,7 +51,7 @@ class AbsenceController extends Controller
         ]);
     }
 
-    public function update(mixed $id): RedirectResponse
+    public function update(Request $request, mixed $id): RedirectResponse
     {
         $validated = request()->validate([
             'timestamp' => 'required',
@@ -61,7 +62,7 @@ class AbsenceController extends Controller
         ]);
 
         $absence = Absence::find($id);
-        $absence->update([...$validated, 'state' => 'Di-input admin']);
+        $absence->update([...$validated, 'state' => $absence->state ?? 'Di-input admin', 'accept' => $request->accept ?? $absence->accept]);
 
         return redirect()->route('admin.absence.index')->with('success', 'Absensi berhasil diubah');
     }
