@@ -31,7 +31,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>
                                     <p> {{ $employee->workUnit?->name ?? '-' }} </p>
-                                    <p class="badge badge-primary">{{ $employee->type }}</p>
+                                    <p class="badge badge-primary">{{ strtoupper($employee->type) }}</p>
                                 </td>
                                 <td>
                                     <p>{{ $employee->workShift?->name ?? '-' }}</p>

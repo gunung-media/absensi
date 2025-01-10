@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('type')->nullable();
             $table->timestamp('timestamp');
+            $table->string('lat')->nullable();
+            $table->string('long')->nullable();
             $table->timestamps();
 
             $table->foreign('fingerprint_id')->references('id')->on('fingerprints')->nullOnDelete();

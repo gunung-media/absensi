@@ -19,6 +19,7 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/', 'DashboardController@index')->name('dashboard');
 
+        Route::resource('absent', 'AbsentController')->except('show');
         Route::resource('absence', 'AbsenceController')->except('show');
         Route::get('abs_sync', 'AbsenceController@sync')->name('absence.sync');
 

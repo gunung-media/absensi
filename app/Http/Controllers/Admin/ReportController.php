@@ -50,7 +50,10 @@ class ReportController extends Controller
         $data = Employee::with([
             'absences' => fn($query) =>
             $query->whereMonth('timestamp', $month)
-                ->whereYear('timestamp', $year)
+                ->whereYear('timestamp', $year),
+            'absents' => fn($query) =>
+            $query->whereMonth('date', $month)
+                ->whereYear('date', $year),
         ])->get();
 
         if ($isPrinting) {

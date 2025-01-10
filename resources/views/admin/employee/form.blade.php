@@ -43,7 +43,7 @@
                                     @foreach (['pns', 'ppnpn'] as $tipe)
                                         <option value="{{ $tipe }}"
                                             {{ isset($employee) && $employee->type == $tipe ? 'selected' : '' }}>
-                                            {{ $tipe }}</option>
+                                            {{ strtoupper($tipe) }}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -139,5 +139,10 @@ class Employee extends Model
     public function absences(): HasMany
     {
         return $this->hasMany(Absence::class);
+    }
+
+    public function absents(): HasMany
+    {
+        return $this->hasMany(Absent::class);
     }
 }

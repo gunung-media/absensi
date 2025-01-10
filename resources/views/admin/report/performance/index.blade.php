@@ -6,7 +6,7 @@
             <i class="fa fa-th"></i> List Data Absensi
         </div>
         <div class="panel-body" id="panel-body">
-            <form method="GET" action="{{ route('admin.report.absence') }}">
+            <form method="GET" action="{{ route('admin.report.performance') }}">
                 <div class="row">
                     <div class="col-md-2">
                         <select name="m" class="form-control">
@@ -256,6 +256,21 @@
                                                 }
                                             }
                                         }
+
+                                        $absentCount = [
+                                            'dl' => $item->absents
+                                                ->filter(fn($absent) => $absent->type == 'dl')
+                                                ->count(),
+                                            'sakit' => $item->absents
+                                                ->filter(fn($absent) => $absent->type == 'sakit')
+                                                ->count(),
+                                            'cuti' => $item->absents
+                                                ->filter(fn($absent) => $absent->type == 'cuti')
+                                                ->count(),
+                                            'tk' => $item->absents
+                                                ->filter(fn($absent) => $absent->type == 'tk')
+                                                ->count(),
+                                        ];
                                     @endphp
                                     <td>{{ sprintf('%02d:%02d', floor($totalMinutesLate / 60), $totalMinutesLate % 60) }}
                                     </td>
@@ -264,11 +279,11 @@
                                     <td>{{ $absenceCount['firstAbsence'] }}</td>
                                     <td>{{ $absenceCount['midAbsence'] }}</td>
                                     <td>{{ $absenceCount['lateAbsence'] }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>{{ $absentCount['dl'] }}</td>
+                                    <td>{{ $absentCount['sakit'] }}</td>
+                                    <td>{{ $absentCount['cuti'] }}</td>
+                                    <td>{{ $absentCount['tk'] }}</td>
+                                    <td>{{ $item->absents->count() }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
