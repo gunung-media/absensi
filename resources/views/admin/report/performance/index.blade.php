@@ -35,7 +35,12 @@
                     <a class="btn btn-primary"
                         href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'print' => true]) }}"
                         target="_blank">
-                        <i class="fa fa-print"></i> Cetak
+                        <i class="fa fa-print"></i> Cetak PDF
+                    </a>
+                    <a class="btn btn-primary"
+                        href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'excel' => true]) }}"
+                        target="_blank">
+                        <i class="fa fa-print"></i> Cetak Excel
                     </a>
                     <hr />
                     <center>

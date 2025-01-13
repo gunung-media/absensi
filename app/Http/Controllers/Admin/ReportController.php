@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\PerformanceExport;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -19,6 +21,7 @@ class ReportController extends Controller
     {
         $params = $request->only('m', 'y');
         $isPrinting = $request->boolean('print', false);
+        $isExcel = $request->boolean('excel', false);
 
         $month = $params['m'] ?? now()->month;
         $year = $params['y'] ?? now()->year;
@@ -40,6 +43,12 @@ class ReportController extends Controller
             return $pdf->download("absence_report_{$month}_{$year}.pdf");
         }
 
+        if ($isExcel) {
+            $fileName = "performance_report_{$month}_{$year}.xlsx";
+
+            return Excel::download(new PerformanceExport($data, $month, $year), $fileName);
+        }
+
         return view('admin.report.absence.index', compact('data', 'month', 'year'));
     }
 
@@ -47,6 +56,7 @@ class ReportController extends Controller
     {
         $params = $request->only('m', 'y');
         $isPrinting = $request->boolean('print', false);
+        $isExcel = $request->boolean('excel', false);
 
         $month = $params['m'] ?? now()->month;
         $year = $params['y'] ?? now()->year;
@@ -66,6 +76,12 @@ class ReportController extends Controller
                 ->setPaper('A4', 'portrait');
 
             return $pdf->download("performance_report_{$month}_{$year}.pdf");
+        }
+
+        if ($isExcel) {
+            $fileName = "performance_report_{$month}_{$year}.xlsx";
+
+            return Excel::download(new PerformanceExport($data, $month, $year), $fileName);
         }
 
         return view('admin.report.performance.index', compact('data', 'month', 'year'));
