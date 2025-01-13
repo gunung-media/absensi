@@ -33,6 +33,7 @@ Route::prefix('admin')
             Route::get('/', 'ReportController@index')->name('index');
             Route::get('/absence', 'ReportController@absence')->name('absence');
             Route::get('/performance', 'ReportController@performance')->name('performance');
+            Route::get('/performance/satpel', 'ReportController@performanceSatpel')->name('performance.satpel');
         });
         Route::resource('employee', 'EmployeeController')->except('show');
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\PerformanceExport;
+use App\Exports\PerformanceSatpelExport;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\WorkUnit;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -99,6 +101,53 @@ class ReportController extends Controller
 
         return view('admin.report.performance.index', $variable);
     }
+
+    public function performanceSatpel(Request $request): Response|BinaryFileResponse|View
+    {
+        $getPerformance = fn($item, $month, $year) => $this->getPerformance($item, $month, $year);
+
+        $params = $request->only('m', 'y');
+        $isPrinting = $request->boolean('print', false);
+        $isExcel = $request->boolean('excel', false);
+
+        $month = $params['m'] ?? now()->month;
+        $year = $params['y'] ?? now()->year;
+
+        $data = WorkUnit::with([
+            'employees' => fn($query) => $query->with([
+                'absences' => fn($query) =>
+                $query->whereMonth('timestamp', $month)
+                    ->whereYear('timestamp', $year)
+                    ->whereAccept(true),
+                'absents' => fn($query) =>
+                $query->whereMonth('date', $month)
+                    ->whereYear('date', $year),
+            ])
+        ])->get();
+
+        $variable = [
+            'data' => $data,
+            'month' => $month,
+            'year' => $year,
+            'getPerformance' => $getPerformance,
+        ];
+
+        if ($isPrinting) {
+            $pdf = Pdf::loadView('admin.report.performance-satpel.print', $variable)
+                ->setPaper('A4', 'portrait');
+
+            return $pdf->download("performance_report_{$month}_{$year}.pdf");
+        }
+
+        if ($isExcel) {
+            $fileName = "performance_report_{$month}_{$year}.xlsx";
+
+            return Excel::download(new PerformanceSatpelExport($variable), $fileName);
+        }
+
+        return view('admin.report.performance-satpel.index', $variable);
+    }
+
 
     private function getPerformance($item, $month, $year)
     {

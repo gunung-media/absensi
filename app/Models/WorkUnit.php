@@ -4,9 +4,10 @@ namespace App\Models;
 
 use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -38,5 +39,10 @@ class WorkUnit extends Model
         return [
             'is_active' => 'boolean'
         ];
+    }
+
+    public function employees(): HasMany
+    {
+        return $this->hasMany(Employee::class);
     }
 }
