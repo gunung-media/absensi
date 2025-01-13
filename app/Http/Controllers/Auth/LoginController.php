@@ -26,4 +26,10 @@ class LoginController extends Controller
 
         return back()->withErrors(['error' => 'Password tidak cocok']);
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
 }

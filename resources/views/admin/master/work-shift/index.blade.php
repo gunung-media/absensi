@@ -18,7 +18,9 @@
                             <th style="background:#f39c12;">NO</th>
                             <th style="background:#f39c12;">SHIFT</th>
                             <th style="background:#f39c12;">JAM MASUK</th>
+                            <th style="background:#f39c12;">JAM ISTIRAHAT</th>
                             <th style="background:#f39c12;">JAM KELUAR</th>
+                            <th style="background:#f39c12;">AMBANG WAKTU</th>
                             <th style="background:#f39c12;">PERINTAH</th>
                         </tr>
                     </thead>
@@ -28,7 +30,9 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $workshift->name }}</td>
                                 <td>{{ $workshift->start }}</td>
+                                <td>{{ $workshift->break }}</td>
                                 <td>{{ $workshift->end }}</td>
+                                <td>{{ $workshift->threshold }} Jam</td>
                                 <td>
                                     <a href="{{ route('admin.work-shift.edit', $workshift->id) }}"
                                         class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>

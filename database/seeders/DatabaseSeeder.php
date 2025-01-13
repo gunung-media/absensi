@@ -21,7 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ShiftSeeder::class,
             WorkUnitSeeder::class,
-            PositionSeeder::class
+            PositionSeeder::class,
+            FingerprintSeeder::class,
+            RankSeeder::class,
         ]);
     }
 }

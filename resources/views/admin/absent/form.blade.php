@@ -27,7 +27,7 @@
                                 <div class="col-sm-4">
                                     <select class="form-control" name="type" required>
                                         <option value="">Pilih Tipe</option>
-                                        @foreach (['dl', 'sakit', 'cuti', 'tk'] as $type)
+                                        @foreach (['dl', 'sakit', 'cuti'] as $type)
                                             <option value="{{ $type }}"
                                                 {{ isset($absent) && $absent->type == $type ? 'selected' : '' }}>
                                                 {{ strtoupper($type) }}

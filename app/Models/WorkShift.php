@@ -6,7 +6,7 @@ use App\Traits\HasActiveScope;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -33,6 +33,8 @@ class WorkShift extends Model
     protected $fillable = [
         'name',
         'start',
-        'end'
+        'break',
+        'end',
+        'threshold'
     ];
 }

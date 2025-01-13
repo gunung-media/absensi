@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->time('start');
+            $table->time('break');
             $table->time('end');
+            $table->float('threshold')->default(2.5);
             $table->timestamps();
         });
     }

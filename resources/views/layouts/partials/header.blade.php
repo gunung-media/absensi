@@ -41,7 +41,7 @@
                 </li>
 
                 <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="{{ route('logout') }}" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="hidden-xs glyphicon glyphicon-log-out"> </span>Hallo, {{ auth()->user()->name }}
                     </a>
                     <ul class="dropdown-menu">
@@ -55,8 +55,8 @@
                                     Password</a>
                             </div>
                             <div class="pull-right">
-                                <a href="javascript:;" data-id="0019" data-toggle="modal" data-target="#modal-logout"
-                                    class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> Keluar</a>
+                                <a href="{{ route('logout') }}" class="btn btn-default btn-flat"><i
+                                        class="fa fa-sign-out"></i> Keluar</a>
                             </div>
                         </li>
                     </ul>

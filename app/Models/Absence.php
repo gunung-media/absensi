@@ -59,12 +59,47 @@ class Absence extends Model
         );
     }
 
+    public function totalHour(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                $timestamp = Carbon::parse($this->timestamp);
+                $sameAbsences = Absence::where('employee_id', $this->employee_id)
+                    ->whereDate('timestamp', $timestamp->toDateString())
+                    ->orderBy('timestamp', 'asc')
+                    ->get();
+
+                if ($sameAbsences->count() < 2) {
+                    return '00:00';
+                }
+
+                $checkIn = Carbon::parse($sameAbsences->first()->timestamp);
+                $checkOut = Carbon::parse($sameAbsences->last()->timestamp);
+
+                $totalMinutes = $checkIn->diffInMinutes($checkOut);
+
+                $hours = floor($totalMinutes / 60);
+                $minutes = $totalMinutes % 60;
+
+                return sprintf('%02d:%02d', $hours, $minutes);
+            }
+        );
+    }
+
     protected function type(): Attribute
     {
         return Attribute::make(
             get: function () {
                 $shift = optional($this->employee->workShift);
+                $threshold = $shift->threshold ?? 2.5;
+                $thresholdHour = floor($threshold);
+                $thresholdMinute = ($threshold - $thresholdHour) * 60;
+                $threshold = ($thresholdHour * 60) + ($thresholdMinute);
+
+
                 $start = Carbon::createFromFormat("H:i:s", $shift->start ?? "08:00:00");
+                $break = Carbon::createFromFormat("H:i:s", $shift->break ?? "12:00:00");
+                $breakEnd = $break->copy()->addHour();
                 $end = Carbon::createFromFormat("H:i:s", $shift->end ?? "17:00:00");
                 $timestamp = Carbon::parse($this->timestamp);
                 $sameAbsences = Absence::where('employee_id', $this->employee_id)
@@ -73,18 +108,21 @@ class Absence extends Model
                     ->get();
 
                 if ($this->id == $sameAbsences->first()->id) {
-                    return $timestamp->toTimeString() > $start->toTimeString() ? "Telat" : "Masuk";
+                    $gap = $timestamp->diffInMinutes($start);
+                    if (abs($gap) < $threshold) {
+                        return $timestamp->toTimeString() > $start->toTimeString() ? "Telat" : "Masuk";
+                    }
                 }
 
-                if (count($sameAbsences) >= 3 && $this->id != $sameAbsences->last()->id) {
-                    return "Hadir";
+                if ($timestamp->between($break, $breakEnd)) {
+                    return "Absen Siang";
                 }
 
                 if ($this->id == $sameAbsences->last()->id) {
                     return $timestamp->toTimeString() < $end->toTimeString() ? "Pulang Cepat" : "Pulang";
                 }
 
-                return "";
+                return "Hadir";
             }
         );
     }

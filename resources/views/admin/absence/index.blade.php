@@ -47,7 +47,12 @@
                                         style="background-color:{{ $absence->accept ? '#00a65a' : '#f39c12' }}">
                                         {{ $absence->accept ? 'Terverifikasi' : 'Butuh diverifikasi' }}</p>
                                 </td>
-                                <td>{{ $absence->type }} </td>
+                                <td>
+                                    <p> {{ $absence->type }} </p>
+                                    @if ($absence->type == 'Pulang' || $absence->type == 'Pulang Cepat')
+                                        <p>{{ $absence->total_hour }} Jam Kerja</p>
+                                    @endif
+                                </td>
                                 <td>
                                     <p>
                                         {{ $absence->fingerprint?->name ?? $absence->state }}

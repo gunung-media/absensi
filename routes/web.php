@@ -16,6 +16,7 @@ Route::prefix('login')
         Route::post('', 'Auth\LoginController@login')->name('.post');
     });
 
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::prefix('admin')
     ->name('admin.')

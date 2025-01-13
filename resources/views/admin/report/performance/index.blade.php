@@ -143,59 +143,11 @@
                                     <td>{{ $item->name }}</td>
 
                                     @php
-                                        $start = \Carbon\Carbon::createFromFormat(
-                                            'H:i:s',
-                                            $item->workShift?->start ?? '08:00:00',
-                                        );
-                                        $end = \Carbon\Carbon::createFromFormat(
-                                            'H:i:s',
-                                            $item->workShift?->end ?? '17:00:00',
-                                        );
-
-                                        $groupedAbsences = $item->absences->groupBy(function ($abs) {
-                                            return \Carbon\Carbon::parse($abs->timestamp)->format('Y-m-d');
-                                        });
-
-                                        $totalMinutesLate = $groupedAbsences->sum(function ($dailyAbsences) use (
-                                            $start,
-                                        ) {
-                                            $firstAbsence = $dailyAbsences->sortBy('timestamp')->first();
-                                            $timestamp = \Carbon\Carbon::parse($firstAbsence->timestamp);
-
-                                            $adjustedTimestamp = $timestamp->copy()->setDateFrom($start);
-
-                                            if ($adjustedTimestamp->toTimeString() > $start->toTimeString()) {
-                                                return $adjustedTimestamp->diffInMinutes($start);
-                                            }
-                                            return 0;
-                                        });
-
-                                        $totalMinutesLate = abs($totalMinutesLate);
-
-                                        $totalMinutesHomeEarly = $groupedAbsences->sum(function ($dailyAbsences) use (
-                                            $end,
-                                        ) {
-                                            $lastAbsence = $dailyAbsences->sortByDesc('timestamp')->first();
-
-                                            $timestamp = \Carbon\Carbon::parse($lastAbsence->timestamp);
-
-                                            $adjustedCheckoutTime = $timestamp->copy()->setDateFrom($end);
-
-                                            if ($adjustedCheckoutTime->toTimeString() < $end->toTimeString()) {
-                                                return $end->diffInMinutes($adjustedCheckoutTime);
-                                            }
-
-                                            return 0;
-                                        });
-
-                                        $totalMinutesHomeEarly = abs($totalMinutesHomeEarly);
-
                                         $currentDay = \Carbon\Carbon::now()->day;
 
                                         $currentDay = date('d');
                                         $currentMonth = date('m');
                                         $currentYear = date('Y');
-
                                         $absenceCount = [
                                             'firstAbsence' =>
                                                 ($month == $currentMonth && $year == $currentYear
@@ -210,57 +162,71 @@
                                                     ? getWeekdaysUpToToday($year, $month, $currentDay)
                                                     : getWeekdayCount($year, $month)) - $item->absents->count(),
                                         ];
+                                        $start = \Carbon\Carbon::createFromFormat(
+                                            'H:i:s',
+                                            $item->workShift?->start ?? '08:00:00',
+                                        );
+                                        $end = \Carbon\Carbon::createFromFormat(
+                                            'H:i:s',
+                                            $item->workShift?->end ?? '17:00:00',
+                                        );
 
-                                        foreach ($groupedAbsences as $date => $absencesForDate) {
-                                            $absencesForDate = $absencesForDate->sortBy('timestamp');
-                                            foreach (getFirstMidLast($absencesForDate) as $absence) {
-                                                $absenceTime = \Carbon\Carbon::parse($absence['timestamp']);
-                                                if ($absenceTime->isWeekend()) {
-                                                    continue;
-                                                }
-                                                $startTimeOnly = $start
-                                                    ->copy()
-                                                    ->setDate(now()->year, now()->month, now()->day);
-                                                $absenceTimeOnly = $absenceTime
-                                                    ->copy()
-                                                    ->setDate(now()->year, now()->month, now()->day);
+                                        $groupedAbsences = $item->absences->groupBy(function ($abs) {
+                                            return \Carbon\Carbon::parse($abs->timestamp)->format('Y-m-d');
+                                        });
 
-                                                $gap = $startTimeOnly->diffInHours($absenceTimeOnly, false);
-                                                $isMid = false;
-                                                $shouldAnd = false;
+                                        $totalMinutesLate = 0;
+                                        $totalMinutesHomeEarly = 0;
 
-                                                if ($absence['id'] == $absencesForDate[0]['id']) {
-                                                    if ($gap <= 4) {
-                                                        $absenceCount['firstAbsence']--;
-                                                        continue;
-                                                    }
+                                        $groupedAbsences = $item->absences->groupBy(function ($abs) {
+                                            return \Carbon\Carbon::parse($abs->timestamp)->format('Y-m-d');
+                                        });
 
-                                                    $isMid = true;
-                                                    $shouldAnd = count($absencesForDate) >= 3;
-                                                }
-                                                if (
-                                                    ($shouldAnd && $isMid) || // If $shouldAnd is true, it must also satisfy $isMid
-                                                    (!$shouldAnd && $isMid) // If $shouldAnd is false, only $isMid matters
-                                                ) {
-                                                    if (
-                                                        count($absencesForDate) >= 3 &&
-                                                        $absence['id'] !=
-                                                            $absencesForDate[count($absencesForDate) - 1]['id']
-                                                    ) {
-                                                        $absenceCount['midAbsence']--;
-                                                        continue;
-                                                    }
+                                        foreach ($groupedAbsences as $dailyAbsences) {
+                                            foreach ($dailyAbsences as $absence) {
+                                                $type = $absence->type;
+
+                                                $timestamp = \Carbon\Carbon::parse($absence->timestamp);
+                                                $shift = optional($absence->employee->workShift);
+
+                                                if ($type === 'Telat') {
+                                                    $start = \Carbon\Carbon::createFromFormat(
+                                                        'H:i:s',
+                                                        $shift->start ?? '08:00:00',
+                                                    );
+                                                    $adjustedTimestamp = $timestamp->copy()->setDateFrom($start);
+
+                                                    $totalMinutesLate += $adjustedTimestamp->diffInMinutes($start);
                                                 }
 
-                                                if (
-                                                    $absence['id'] ==
-                                                    $absencesForDate[count($absencesForDate) - 1]['id']
-                                                ) {
-                                                    $absenceCount['lateAbsence']--;
-                                                    continue;
+                                                if ($type === 'Pulang Cepat') {
+                                                    $end = \Carbon\Carbon::createFromFormat(
+                                                        'H:i:s',
+                                                        $shift->end ?? '17:00:00',
+                                                    );
+                                                    $adjustedCheckoutTime = $timestamp->copy()->setDateFrom($end);
+
+                                                    $totalMinutesHomeEarly += $end->diffInMinutes(
+                                                        $adjustedCheckoutTime,
+                                                    );
+                                                }
+
+                                                if ($type == 'Telat' || ($type = 'Masuk')) {
+                                                    $absenceCount['firstAbsence'] -= 1;
+                                                }
+
+                                                if ($type == 'Absen Siang') {
+                                                    $absenceCount['midAbsence'] -= 1;
+                                                }
+
+                                                if ($type == 'Pulang' || ($type = 'Pulang Cepat')) {
+                                                    $absenceCount['lateAbsence'] -= 1;
                                                 }
                                             }
                                         }
+
+                                        $totalMinutesLate = abs($totalMinutesLate);
+                                        $totalMinutesHomeEarly = abs($totalMinutesHomeEarly);
 
                                         $absentCount = [
                                             'dl' => $item->absents
@@ -272,9 +238,7 @@
                                             'cuti' => $item->absents
                                                 ->filter(fn($absent) => $absent->type == 'cuti')
                                                 ->count(),
-                                            'tk' => $item->absents
-                                                ->filter(fn($absent) => $absent->type == 'tk')
-                                                ->count(),
+                                            'tk' => min($absenceCount),
                                         ];
                                     @endphp
                                     <td>{{ sprintf('%02d:%02d', floor($totalMinutesLate / 60), $totalMinutesLate % 60) }}
@@ -288,7 +252,7 @@
                                     <td>{{ $absentCount['sakit'] }}</td>
                                     <td>{{ $absentCount['cuti'] }}</td>
                                     <td>{{ $absentCount['tk'] }}</td>
-                                    <td>{{ $item->absents->count() }}</td>
+                                    <td>{{ array_sum($absentCount) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
