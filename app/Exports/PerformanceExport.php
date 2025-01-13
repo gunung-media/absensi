@@ -7,23 +7,15 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class PerformanceExport implements FromView
 {
-    protected $data;
-    protected $month;
-    protected $year;
+    protected $variable;
 
-    public function __construct($data, $month, $year)
+    public function __construct($variable)
     {
-        $this->data = $data;
-        $this->month = $month;
-        $this->year = $year;
+        $this->variable = $variable;
     }
 
     public function view(): View
     {
-        return view('admin.report.performance.excel', [
-            'data' => $this->data,
-            'month' => $this->month,
-            'year' => $this->year,
-        ]);
+        return view('admin.report.performance.excel', $this->variable);
     }
 }

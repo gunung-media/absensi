@@ -55,82 +55,14 @@
             </tr>
         </thead>
         <tbody>
-            @php
-                function getFirstMidLast($array)
-                {
-                    $count = count($array);
-
-                    // Handle cases with fewer than 3 elements
-                    if ($count == 0) {
-                        return [];
-                    }
-                    if ($count == 1) {
-                        return [$array[0]];
-                    }
-                    if ($count == 2) {
-                        return [$array[0], $array[1]];
-                    }
-
-                    $first = $array[0];
-                    $mid = $array[intval($count / 2)]; // Middle index
-                    $last = $array[$count - 1];
-
-                    return [$first, $mid, $last];
-                }
-                function getWeekdaysUpToToday($year, $month, $day)
-                {
-                    $startDate = \Carbon\Carbon::createFromDate($year, $month, 1);
-                    $endDate = \Carbon\Carbon::createFromDate($year, $month, $day);
-                    $weekdayCount = 0;
-
-                    while ($startDate->lte($endDate)) {
-                        if (!$startDate->isWeekend()) {
-                            // Exclude Saturdays and Sundays
-                            $weekdayCount++;
-                        }
-                        $startDate->addDay();
-                    }
-
-                    return $weekdayCount;
-                }
-                function getWeekdayCount($year, $month)
-                {
-                    $startDate = \Carbon\Carbon::createFromDate($year, $month, 1);
-                    $endDate = $startDate->copy()->endOfMonth();
-                    $weekdayCount = 0;
-
-                    while ($startDate->lte($endDate)) {
-                        if (!$startDate->isWeekend()) {
-                            // Check if the day is not Saturday or Sunday
-                            $weekdayCount++;
-                        }
-                        $startDate->addDay(); // Move to the next day
-                    }
-
-                    return $weekdayCount;
-                }
-            @endphp
             @foreach ($data as $key => $item)
                 @php
-                    $currentDay = \Carbon\Carbon::now()->day;
-                    $currentMonth = date('m');
-                    $currentYear = date('Y');
-                    $absenceCount = [
-                        'firstAbsence' => getWeekdayCount($year, $month) - $item->absents->count(),
-                        'midAbsence' => getWeekdayCount($year, $month) - $item->absents->count(),
-                        'lateAbsence' => getWeekdayCount($year, $month) - $item->absents->count(),
-                    ];
-                    $totalMinutesLate = 0;
-                    $totalMinutesHomeEarly = 0;
-                    foreach ($item->absences as $absence) {
-                        // Calculate late and early times
-                    }
-                    $absentCount = [
-                        'dl' => $item->absents->where('type', 'dl')->count(),
-                        'sakit' => $item->absents->where('type', 'sakit')->count(),
-                        'cuti' => $item->absents->where('type', 'cuti')->count(),
-                        'tk' => min($absenceCount),
-                    ];
+                    [
+                        'absentCount' => $absentCount,
+                        'absenceCount' => $absenceCount,
+                        'totalMinutesLate' => $totalMinutesLate,
+                        'totalMinutesHomeEarly' => $totalMinutesHomeEarly,
+                    ] = $getPerformance($item, $month, $year);
                 @endphp
                 <tr>
                     <td>{{ $key + 1 }}</td>

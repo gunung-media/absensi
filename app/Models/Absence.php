@@ -97,11 +97,15 @@ class Absence extends Model
                 $threshold = ($thresholdHour * 60) + ($thresholdMinute);
 
 
-                $start = Carbon::createFromFormat("H:i:s", $shift->start ?? "08:00:00");
-                $break = Carbon::createFromFormat("H:i:s", $shift->break ?? "12:00:00");
-                $breakEnd = $break->copy()->addHour();
-                $end = Carbon::createFromFormat("H:i:s", $shift->end ?? "17:00:00");
                 $timestamp = Carbon::parse($this->timestamp);
+                $start = Carbon::createFromFormat("H:i:s", $shift->start ?? "08:00:00")
+                    ->setDate($timestamp->year, $timestamp->month, $timestamp->day);
+                $break = Carbon::createFromFormat("H:i:s", $shift->break ?? "12:00:00")
+                    ->setDate($timestamp->year, $timestamp->month, $timestamp->day);
+                $breakEnd = $break->copy()->addHour();
+                $end = Carbon::createFromFormat("H:i:s", $shift->end ?? "17:00:00")
+                    ->setDate($timestamp->year, $timestamp->month, $timestamp->day);
+
                 $sameAbsences = Absence::where('employee_id', $this->employee_id)
                     ->whereDate('timestamp', $timestamp)
                     ->orderBy('timestamp', 'asc')

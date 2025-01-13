@@ -87,165 +87,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                function getFirstMidLast($array)
-                                {
-                                    $count = count($array);
-
-                                    // Handle cases with fewer than 3 elements
-                                    if ($count == 0) {
-                                        return [];
-                                    }
-                                    if ($count == 1) {
-                                        return [$array[0]];
-                                    }
-                                    if ($count == 2) {
-                                        return [$array[0], $array[1]];
-                                    }
-
-                                    $first = $array[0];
-                                    $mid = $array[intval($count / 2)]; // Middle index
-                                    $last = $array[$count - 1];
-
-                                    return [$first, $mid, $last];
-                                }
-                                function getWeekdaysUpToToday($year, $month, $day)
-                                {
-                                    $startDate = \Carbon\Carbon::createFromDate($year, $month, 1);
-                                    $endDate = \Carbon\Carbon::createFromDate($year, $month, $day);
-                                    $weekdayCount = 0;
-
-                                    while ($startDate->lte($endDate)) {
-                                        if (!$startDate->isWeekend()) {
-                                            // Exclude Saturdays and Sundays
-                                            $weekdayCount++;
-                                        }
-                                        $startDate->addDay();
-                                    }
-
-                                    return $weekdayCount;
-                                }
-                                function getWeekdayCount($year, $month)
-                                {
-                                    $startDate = \Carbon\Carbon::createFromDate($year, $month, 1);
-                                    $endDate = $startDate->copy()->endOfMonth();
-                                    $weekdayCount = 0;
-
-                                    while ($startDate->lte($endDate)) {
-                                        if (!$startDate->isWeekend()) {
-                                            // Check if the day is not Saturday or Sunday
-                                            $weekdayCount++;
-                                        }
-                                        $startDate->addDay(); // Move to the next day
-                                    }
-
-                                    return $weekdayCount;
-                                }
-                            @endphp
                             @foreach ($data as $key => $item)
+                                @php
+                                    [
+                                        'absentCount' => $absentCount,
+                                        'absenceCount' => $absenceCount,
+                                        'totalMinutesLate' => $totalMinutesLate,
+                                        'totalMinutesHomeEarly' => $totalMinutesHomeEarly,
+                                    ] = $getPerformance($item, $month, $year);
+                                @endphp
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->name }}</td>
-
-                                    @php
-                                        $currentDay = \Carbon\Carbon::now()->day;
-
-                                        $currentDay = date('d');
-                                        $currentMonth = date('m');
-                                        $currentYear = date('Y');
-                                        $absenceCount = [
-                                            'firstAbsence' =>
-                                                ($month == $currentMonth && $year == $currentYear
-                                                    ? getWeekdaysUpToToday($year, $month, $currentDay)
-                                                    : getWeekdayCount($year, $month)) - $item->absents->count(),
-                                            'midAbsence' =>
-                                                ($month == $currentMonth && $year == $currentYear
-                                                    ? getWeekdaysUpToToday($year, $month, $currentDay)
-                                                    : getWeekdayCount($year, $month)) - $item->absents->count(),
-                                            'lateAbsence' =>
-                                                ($month == $currentMonth && $year == $currentYear
-                                                    ? getWeekdaysUpToToday($year, $month, $currentDay)
-                                                    : getWeekdayCount($year, $month)) - $item->absents->count(),
-                                        ];
-                                        $start = \Carbon\Carbon::createFromFormat(
-                                            'H:i:s',
-                                            $item->workShift?->start ?? '08:00:00',
-                                        );
-                                        $end = \Carbon\Carbon::createFromFormat(
-                                            'H:i:s',
-                                            $item->workShift?->end ?? '17:00:00',
-                                        );
-
-                                        $groupedAbsences = $item->absences->groupBy(function ($abs) {
-                                            return \Carbon\Carbon::parse($abs->timestamp)->format('Y-m-d');
-                                        });
-
-                                        $totalMinutesLate = 0;
-                                        $totalMinutesHomeEarly = 0;
-
-                                        $groupedAbsences = $item->absences->groupBy(function ($abs) {
-                                            return \Carbon\Carbon::parse($abs->timestamp)->format('Y-m-d');
-                                        });
-
-                                        foreach ($groupedAbsences as $dailyAbsences) {
-                                            foreach ($dailyAbsences as $absence) {
-                                                $type = $absence->type;
-
-                                                $timestamp = \Carbon\Carbon::parse($absence->timestamp);
-                                                $shift = optional($absence->employee->workShift);
-
-                                                if ($type === 'Telat') {
-                                                    $start = \Carbon\Carbon::createFromFormat(
-                                                        'H:i:s',
-                                                        $shift->start ?? '08:00:00',
-                                                    );
-                                                    $adjustedTimestamp = $timestamp->copy()->setDateFrom($start);
-
-                                                    $totalMinutesLate += $adjustedTimestamp->diffInMinutes($start);
-                                                }
-
-                                                if ($type === 'Pulang Cepat') {
-                                                    $end = \Carbon\Carbon::createFromFormat(
-                                                        'H:i:s',
-                                                        $shift->end ?? '17:00:00',
-                                                    );
-                                                    $adjustedCheckoutTime = $timestamp->copy()->setDateFrom($end);
-
-                                                    $totalMinutesHomeEarly += $end->diffInMinutes(
-                                                        $adjustedCheckoutTime,
-                                                    );
-                                                }
-
-                                                if ($type == 'Telat' || ($type = 'Masuk')) {
-                                                    $absenceCount['firstAbsence'] -= 1;
-                                                }
-
-                                                if ($type == 'Absen Siang') {
-                                                    $absenceCount['midAbsence'] -= 1;
-                                                }
-
-                                                if ($type == 'Pulang' || ($type = 'Pulang Cepat')) {
-                                                    $absenceCount['lateAbsence'] -= 1;
-                                                }
-                                            }
-                                        }
-
-                                        $totalMinutesLate = abs($totalMinutesLate);
-                                        $totalMinutesHomeEarly = abs($totalMinutesHomeEarly);
-
-                                        $absentCount = [
-                                            'dl' => $item->absents
-                                                ->filter(fn($absent) => $absent->type == 'dl')
-                                                ->count(),
-                                            'sakit' => $item->absents
-                                                ->filter(fn($absent) => $absent->type == 'sakit')
-                                                ->count(),
-                                            'cuti' => $item->absents
-                                                ->filter(fn($absent) => $absent->type == 'cuti')
-                                                ->count(),
-                                            'tk' => min($absenceCount),
-                                        ];
-                                    @endphp
                                     <td>{{ sprintf('%02d:%02d', floor($totalMinutesLate / 60), $totalMinutesLate % 60) }}
                                     </td>
                                     <td>{{ sprintf('%02d:%02d', floor($totalMinutesHomeEarly / 60), $totalMinutesHomeEarly % 60) }}
