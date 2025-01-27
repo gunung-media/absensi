@@ -89,7 +89,7 @@
         <hr />
         <div class="header-section">
             <h4>Performa Pegawai</h4>
-            <h4><strong>BPTD XVI Kalteng</strong></h4>
+            <h4><strong>BPTD XVI Kalteng</strong> - {{ $workUnits->where('id', $workUnitId)->first()->name }}</h4>
             <h4><small>Menteng, Jekan Raya, Palangka Raya City, Central Kalimantan</small></h4>
         </div>
         <hr />

@@ -17,7 +17,8 @@
                 <th colspan="12" style="text-align: center; font-size: 16px; font-weight: bold;">Performa Pegawai</th>
             </tr>
             <tr>
-                <th colspan="12" style="text-align: center; font-size: 14px;">BPTD XVI Kalteng</th>
+                <th colspan="12" style="text-align: center; font-size: 14px;">BPTD XVI Kalteng -
+                    {{ $workUnits->where('id', $workUnitId)->first()->name }}</th>
             </tr>
             <tr>
                 <th colspan="12" style="text-align: center;">Menteng, Jekan Raya, Palangka Raya City, Central Kalimantan

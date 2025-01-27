@@ -62,14 +62,25 @@ class ReportController extends Controller
     {
         $getPerformance = fn($item, $month, $year) => $this->getPerformance($item, $month, $year);
 
-        $params = $request->only('m', 'y');
+        $params = $request->only('m', 'y', 'work_unit_id');
         $isPrinting = $request->boolean('print', false);
         $isExcel = $request->boolean('excel', false);
 
         $month = $params['m'] ?? now()->month;
         $year = $params['y'] ?? now()->year;
+        $workUnitId = $params['work_unit_id'] ?? null;
 
-        $data = Employee::with([
+        $query = Employee::query();
+
+        if ($workUnitId && $workUnitId == 'all') {
+            return redirect()->route('admin.report.performance.satpel', $params);
+        }
+
+        if ($workUnitId && $workUnitId !== 'all') {
+            $query->where('work_unit_id', $workUnitId);
+        }
+
+        $data = $query->with([
             'absences' => fn($query) =>
             $query->whereMonth('timestamp', $month)
                 ->whereYear('timestamp', $year)
@@ -79,11 +90,14 @@ class ReportController extends Controller
                 ->whereYear('date', $year),
         ])->get();
 
+
         $variable = [
             'data' => $data,
             'month' => $month,
             'year' => $year,
+            'workUnitId' => $workUnitId,
             'getPerformance' => $getPerformance,
+            'workUnits' => WorkUnit::active()->get()
         ];
 
         if ($isPrinting) {
@@ -102,18 +116,26 @@ class ReportController extends Controller
         return view('admin.report.performance.index', $variable);
     }
 
-    public function performanceSatpel(Request $request): Response|BinaryFileResponse|View
+    public function performanceSatpel(Request $request)
     {
         $getPerformance = fn($item, $month, $year) => $this->getPerformance($item, $month, $year);
+        $viewName = 'admin.report.performance-satpel';
 
-        $params = $request->only('m', 'y');
+        $params = $request->only('m', 'y', 'work_unit_id');
         $isPrinting = $request->boolean('print', false);
         $isExcel = $request->boolean('excel', false);
 
         $month = $params['m'] ?? now()->month;
         $year = $params['y'] ?? now()->year;
+        $workUnitId = $params['work_unit_id'] ?? null;
 
-        $data = WorkUnit::with([
+        $query = WorkUnit::query();
+
+        if ($workUnitId && $workUnitId !== 'all') {
+            return redirect()->route('admin.report.performance', $params);
+        }
+
+        $data = $query->with([
             'employees' => fn($query) => $query->with([
                 'absences' => fn($query) =>
                 $query->whereMonth('timestamp', $month)
@@ -129,11 +151,13 @@ class ReportController extends Controller
             'data' => $data,
             'month' => $month,
             'year' => $year,
+            'workUnitId' => $workUnitId,
             'getPerformance' => $getPerformance,
+            'workUnits' => WorkUnit::active()->get()
         ];
 
         if ($isPrinting) {
-            $pdf = Pdf::loadView('admin.report.performance-satpel.print', $variable)
+            $pdf = Pdf::loadView("{$viewName}.print}", $variable)
                 ->setPaper('A4', 'portrait');
 
             return $pdf->download("performance_report_{$month}_{$year}.pdf");
@@ -145,7 +169,7 @@ class ReportController extends Controller
             return Excel::download(new PerformanceSatpelExport($variable), $fileName);
         }
 
-        return view('admin.report.performance-satpel.index', $variable);
+        return view("{$viewName}.index", $variable);
     }
 
 

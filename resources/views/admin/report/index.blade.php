@@ -25,19 +25,6 @@
                 </div>
 
                 <div class="col-md-2 col-sm-2 col-xs-12">
-                    <a href="{{ route('admin.report.performance') }}" style="color:#000">
-                        <div class="info-box" style="border:1px solid #ddd">
-                            <div style="margin-top:15px">
-                                <center>
-                                    <i class="fa fa-fax fa-2x"></i>
-                                    <span class="info-box-text">Rekap Performa Pegawai </span>
-                                </center>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-md-2 col-sm-2 col-xs-12">
                     <a href="{{ route('admin.report.performance.satpel') }}" style="color:#000">
                         <div class="info-box" style="border:1px solid #ddd">
                             <div style="margin-top:15px">
@@ -49,6 +36,7 @@
                         </div>
                     </a>
                 </div>
+
             </div>
         </div>
     </div>

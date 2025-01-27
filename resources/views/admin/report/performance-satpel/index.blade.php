@@ -22,6 +22,20 @@
                         <input type="number" name="y" value="{{ old('y', $year) }}" class="form-control"
                             min="1900" max="2099">
                     </div>
+
+                    <div class="form-group col-md-2">
+                        <select class="form-control" name="work_unit_id" required>
+                            <option value="" disabled>Pilih Unit Kerja</option>
+                            <option value="all">Semua Unit Kerja</option>
+                            @forelse ($workUnits as $workUnit)
+                                <option value="{{ $workUnit->id }}" {{ $workUnitId == $workUnit->id ? 'selected' : '' }}>
+                                    {{ $workUnit->name }}
+                                </option>
+                            @empty
+                                <option disabled>Silahkan Tambah Unit Kerja Terlebih Dahulu</option>
+                            @endforelse
+                        </select>
+                    </div>
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-success">
                             <i class="fa fa-refresh"></i> LIHAT

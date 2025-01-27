@@ -6,7 +6,7 @@
             <i class="fa fa-th"></i> Rekap Performa
         </div>
         <div class="panel-body" id="panel-body">
-            <form method="GET" action="{{ route('admin.report.performance') }}">
+            <form method="GET" action="{{ route('admin.report.performance.satpel') }}">
                 <div class="row">
                     <div class="col-md-2">
                         <select name="m" class="form-control">
@@ -22,6 +22,20 @@
                         <input type="number" name="y" value="{{ old('y', $year) }}" class="form-control"
                             min="1900" max="2099">
                     </div>
+
+                    <div class="form-group col-md-2">
+                        <select class="form-control" name="work_unit_id" required>
+                            <option value="" disabled>Pilih Unit Kerja</option>
+                            <option value="all">Semua Unit Kerja</option>
+                            @forelse ($workUnits as $workUnit)
+                                <option value="{{ $workUnit->id }}" {{ $workUnitId == $workUnit->id ? 'selected' : '' }}>
+                                    {{ $workUnit->name }}
+                                </option>
+                            @empty
+                                <option disabled>Silahkan Tambah Unit Kerja Terlebih Dahulu</option>
+                            @endforelse
+                        </select>
+                    </div>
                     <div class="col-md-6">
                         <button type="submit" class="btn btn-success">
                             <i class="fa fa-refresh"></i> LIHAT
@@ -30,31 +44,31 @@
                 </div>
             </form>
 
-            @if ($data->isNotEmpty())
-                <div class="table-container">
-                    <a class="btn btn-primary"
-                        href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'print' => true]) }}"
-                        target="_blank">
-                        <i class="fa fa-print"></i> Cetak PDF
-                    </a>
-                    <a class="btn btn-primary"
-                        href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'excel' => true]) }}"
-                        target="_blank">
-                        <i class="fa fa-print"></i> Cetak Excel
-                    </a>
-                    <hr />
-                    <center>
-                        <h4>Performa Pegawai</h4>
-                        <h4><strong>BPTD XVI Kalteng</strong></h4>
-                        <h4><small>Menteng, Jekan Raya, Palangka Raya City, Central Kalimantan</small></h4>
-                    </center>
-                    <hr />
+            <div class="table-container">
+                <a class="btn btn-primary"
+                    href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'print' => true, 'work_unit_id' => $workUnitId]) }}"
+                    target="_blank">
+                    <i class="fa fa-print"></i> Cetak PDF
+                </a>
+                <a class="btn btn-primary"
+                    href="{{ route('admin.report.performance', ['y' => $year, 'm' => $month, 'excel' => true, 'work_unit_id' => $workUnitId]) }}"
+                    target="_blank">
+                    <i class="fa fa-print"></i> Cetak Excel
+                </a>
+                <hr />
+                <center>
+                    <h4>Performa Pegawai</h4>
+                    <h4><strong>BPTD XVI Kalteng</strong> - {{ $workUnits->where('id', $workUnitId)->first()->name }}</h4>
+                    <h4><small>Menteng, Jekan Raya, Palangka Raya City, Central Kalimantan</small></h4>
+                </center>
+                <hr />
 
-                    <div style="display: flex; justify-content: center; gap: 1rem">
-                        <p><strong>Bulan:</strong> {{ \Carbon\Carbon::create($year, $month, 1)->format('F Y') }}</p>
-                        <p><strong>Total:</strong> {{ $data->count() }}</p>
-                    </div>
+                <div style="display: flex; justify-content: center; gap: 1rem">
+                    <p><strong>Bulan:</strong> {{ \Carbon\Carbon::create($year, $month, 1)->format('F Y') }}</p>
+                    <p><strong>Total:</strong> {{ $data->count() }}</p>
+                </div>
 
+                @if ($data->isNotEmpty())
                     <table class="table table-bordered table-sm">
                         <thead>
                             <tr>
@@ -115,8 +129,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-            @endif
+                @endif
+            </div>
         </div>
     </div>
 @endsection
