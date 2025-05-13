@@ -27,6 +27,7 @@ class WorkShiftController extends Controller
         $validate = $request->validate([
             'name' => 'required',
             'start' => 'required',
+            'break' => 'required',
             'end' => 'required',
         ]);
 
@@ -48,6 +49,7 @@ class WorkShiftController extends Controller
         $validate = $request->validate([
             'name' => 'required',
             'start' => 'required',
+            'break' => 'required',
             'end' => 'required',
         ]);
 

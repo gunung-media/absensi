@@ -40,6 +40,14 @@
                             </div>
 
                             <div class="form-group">
+                                <label class="col-sm-2 control-label">Jam Istirahat</label>
+                                <div class="col-sm-4">
+                                    <input type="time" id="break" name="break" class="form-control" required
+                                        value="{{ isset($workShift) ? $workShift->break : old('break') }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">Jam Keluar</label>
                                 <div class="col-sm-4">
                                     <input type="time" id="end" name="end" class="form-control" required
