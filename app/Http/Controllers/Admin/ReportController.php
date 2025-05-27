@@ -157,7 +157,7 @@ class ReportController extends Controller
         ];
 
         if ($isPrinting) {
-            $pdf = Pdf::loadView("{$viewName}.print}", $variable)
+            $pdf = Pdf::loadView("{$viewName}.print", $variable)
                 ->setPaper('A4', 'portrait');
 
             return $pdf->download("performance_report_{$month}_{$year}.pdf");
