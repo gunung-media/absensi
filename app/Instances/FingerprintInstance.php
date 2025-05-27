@@ -44,6 +44,7 @@ class FingerprintInstance
             pcntl_alarm(0);
             return true;
         } catch (\Throwable $th) {
+            dd($th);
             session()->flash('errorToasts', array_merge(session('errorToasts', []), ["Mesin '{$this->fingerprint->name}' offline"]));
             return false;
         }
