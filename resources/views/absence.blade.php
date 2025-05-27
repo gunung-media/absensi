@@ -28,7 +28,7 @@
                             </div>
                             <div class="box-footer">
                                 <button type="submit" id="simpan-button" name="simpan"
-                                    class="btn btn-primary btn-sm pull-right" style="margin-right:10px">
+                                    class="btn btn-primary btn-sm pull-right" style="margin-right:10px" disabled>
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </div>
@@ -45,29 +45,24 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
-                        // Success: Store latitude and longitude in the hidden fields
                         document.getElementById('latitude').value = position.coords.latitude;
                         document.getElementById('longitude').value = position.coords.longitude;
 
 
                         console.log(position)
 
-                        // Enable the "Simpan" button
                         document.getElementById('simpan-button').disabled = false;
                     },
                     function() {
-                        // Error: Show location error message and keep the button disabled
                         document.getElementById('location-error').style.display = 'block';
                     }
                 );
             } else {
-                // Browser doesn't support geolocation
                 document.getElementById('location-error').innerText = 'Geolocation is not supported by your browser.';
                 document.getElementById('location-error').style.display = 'block';
             }
         }
 
-        // Run location request when the page loads
         document.addEventListener('DOMContentLoaded', requestLocation);
     </script>
 @endsection
