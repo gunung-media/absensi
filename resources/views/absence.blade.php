@@ -28,7 +28,7 @@
                             </div>
                             <div class="box-footer">
                                 <button type="submit" id="simpan-button" name="simpan"
-                                    class="btn btn-primary btn-sm pull-right" style="margin-right:10px" disabled>
+                                    class="btn btn-primary btn-sm pull-right" style="margin-right:10px">
                                     <i class="fa fa-save"></i> Simpan
                                 </button>
                             </div>
