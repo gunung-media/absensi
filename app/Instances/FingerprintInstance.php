@@ -29,23 +29,28 @@ class FingerprintInstance
 
     public function check(): bool
     {
+        $start = microtime(true);
+        $timeout = 1.0;
+
         try {
-            pcntl_async_signals(true);
-
-            pcntl_signal(SIGALRM, function () {
-                throw new \Exception('Operation timed out');
-            });
-
-            pcntl_alarm(1);
-
             $this->init();
+
+            if ((microtime(true) - $start) > $timeout) {
+                throw new \Exception('Operation timed out during init()');
+            }
+
             $this->disable();
 
-            pcntl_alarm(0);
+            if ((microtime(true) - $start) > $timeout) {
+                throw new \Exception('Operation timed out during disable()');
+            }
+
             return true;
         } catch (\Throwable $th) {
-            dd($th);
-            session()->flash('errorToasts', array_merge(session('errorToasts', []), ["Mesin '{$this->fingerprint->name}' offline"]));
+            session()->flash('errorToasts', array_merge(
+                session('errorToasts', []),
+                ["Mesin '{$this->fingerprint->name}' offline"]
+            ));
             return false;
         }
     }
