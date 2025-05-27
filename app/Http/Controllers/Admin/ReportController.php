@@ -216,7 +216,7 @@ class ReportController extends Controller
                 $type = $absence->type;
 
                 $timestamp = Carbon::parse($absence->timestamp);
-                $shift = optional($absence->employee->workShift);
+                $shift = optional($absence->employee?->workShift);
 
                 if ($type === 'Telat') {
                     $start = Carbon::createFromFormat(

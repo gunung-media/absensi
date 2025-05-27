@@ -90,7 +90,7 @@ class Absence extends Model
     {
         return Attribute::make(
             get: function () {
-                $shift = optional($this->employee->workShift);
+                $shift = optional($this->employee?->workShift);
                 $threshold = $shift->threshold ?? 2.5;
                 $thresholdHour = floor($threshold);
                 $thresholdMinute = ($threshold - $thresholdHour) * 60;

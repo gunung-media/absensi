@@ -18,8 +18,8 @@ class AbsenceController extends Controller
     {
         $validated = $request->validate([
             'username' => 'required|exists:employees,username',
-            'lat' => 'required',
-            'long' => 'required',
+            'lat' => 'nullable',
+            'long' => 'nullable',
         ]);
 
         $employee = Employee::where('username', $validated['username'])->first();
@@ -30,8 +30,8 @@ class AbsenceController extends Controller
             'timestamp' => date('Y-m-d H:i:s'),
             'state' => 'Absen Manual',
             'type' => null,
-            'lat' => $validated['lat'],
-            'long' => $validated['long'],
+            'lat' => $validated['lat'] ?? 0,
+            'long' => $validated['long'] ?? 0,
             'accept' => 0
         ]);
 

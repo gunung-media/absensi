@@ -65,9 +65,9 @@
                                     @endif
                                 </td>
                                 <td>{{ $absence->employee->name ?? 'User Sudah Dihapus' }}</td>
-                                <td>{{ $absence->employee->workUnit?->name ?? '-' }}</td>
-                                <td>{{ $absence->employee->workShift?->name ?? '' }}
-                                    {{ ($absence->employee->workShift?->start ?? '08:00:00') . '-' . ($absence->employee->workShift?->end ?? '17:00:00') }}
+                                <td>{{ $absence->employee?->workUnit?->name ?? '-' }}</td>
+                                <td>{{ $absence->employee?->workShift?->name ?? '' }}
+                                    {{ ($absence->employee?->workShift?->start ?? '08:00:00') . '-' . ($absence->employee->workShift?->end ?? '17:00:00') }}
                                 </td>
 
                                 <td>
