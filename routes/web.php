@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::name('absence.')->group(function () {
     Route::get('/', 'AbsenceController@newAbsenceFromEmployee')->name('index');
-    Route::post('/', 'AbsenceController@storeAbsenceFromEmployee')->name('store');
+    Route::post('absence_store', 'AbsenceController@storeAbsenceFromEmployee')->name('store');
 });
 
 Route::prefix('login')

@@ -40,7 +40,6 @@
     </div>
 
     <script>
-        // Request the user's location
         function requestLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
