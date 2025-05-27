@@ -15,6 +15,14 @@ class FingerprintInstance
 
     public function init()
     {
+        $timeout = 2;
+        $fp = @stream_socket_client("tcp://{$this->fingerprint->ip}:{$this->fingerprint->port}", $errno, $errstr, $timeout);
+
+        if (!$fp) {
+            throw new \Exception("Unable to connect to fingerprint device: $errstr ($errno)");
+        }
+
+        fclose($fp);
         $zk = new ZKTeco($this->fingerprint->ip, $this->fingerprint->port);
         $this->zk = $zk;
         $this->zk->connect();
@@ -29,21 +37,9 @@ class FingerprintInstance
 
     public function check(): bool
     {
-        $start = microtime(true);
-        $timeout = 1.0;
-
         try {
             $this->init();
-
-            if ((microtime(true) - $start) > $timeout) {
-                throw new \Exception('Operation timed out during init()');
-            }
-
             $this->disable();
-
-            if ((microtime(true) - $start) > $timeout) {
-                throw new \Exception('Operation timed out during disable()');
-            }
 
             return true;
         } catch (\Throwable $th) {
